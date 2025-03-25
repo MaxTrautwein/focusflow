@@ -164,10 +164,10 @@ graph TD;
 
 ### 2.3.3 Use case descriptions
 
-#### [Use case: Create task](\use_case_create_task.md)
+#### [Use case: Create task](use_case_create_task.md)
 
-#### [Use case: Remind for task due](\use_case_remind_for_task_due.md)
+#### [Use case: Remind for task due](use_case_remind_for_task_due.md)
 
-#### [Use case: Task status](\use_case_task_status.md)
+#### [Use case: Task status](use_case_task_status.md)
 
-#### [Use case: Update status](\use_case_update_task.md)
+#### [Use case: Update status](use_case_update_task.md)
