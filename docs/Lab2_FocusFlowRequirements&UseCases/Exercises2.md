@@ -135,7 +135,7 @@ graph TD;
     C.1-->E.1[Setup < 15 min, with Docker-Compose];
 
     B.2[Adaptability]-->C.2[Parts of the System should be Exchangeable];
-    C.2-->E.2[Central Configuration for Connectiondata];
+    C.2-->E.2[Central Configuration for Connection data];
 ```
 
 ### Measures for testability
@@ -158,6 +158,6 @@ graph TD;
 ### 2.3.2 Use case Diagram
 </br> 
 
-![Image of Use case diagram](/docs/Pictures/Use_case_diagram.png)
+![Image of use case diagram](/docs/Pictures/Use_case_diagram.png)
 
 
