@@ -148,16 +148,17 @@ graph TD;
 
 ## Exercise 2.3 (15 Points): System Context & Use Cases
 
-### 2.3.1 System context Diagram
+### 2.3.1 System context diagram
 </br>
 
 ![Image of system context diagram](/docs/Pictures/Context_diagram.png)
 
 </br></br></br>
 
-### 2.3.2 Use case Diagram
+### 2.3.2 Use case diagram - Task management
 </br> 
 
 ![Image of use case diagram](/docs/Pictures/Use_case_diagram.png)
 
 
+### 2.3.3 Use case description
