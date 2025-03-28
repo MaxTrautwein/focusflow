@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -40,13 +39,22 @@ public class Task {
   // Constructor
   public Task() {}
 
-  // Getters and Setters
-  public Long getId() {
-    return task_id;
+  public Task(String title, String short_description, String long_description, Instant due_date, User user,
+              TaskPriority priority, TaskStatus status) {
+    this.title = title;
+    this.short_description = short_description;
+    this.long_description = long_description;
+    this.due_date = due_date;
+    this.user = user;
+    this.priority = priority;
+    this.status = status;
   }
 
-  public void setId(Long task_id) {
-    this.task_id = task_id;
+  // Getters and Setters
+
+  // Only allow Get on id
+  public Long getId() {
+    return task_id;
   }
 
   public String getTitle() {

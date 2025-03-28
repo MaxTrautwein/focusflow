@@ -1,9 +1,6 @@
 package hse.group1.focusflow.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Team {
@@ -20,13 +17,16 @@ public class Team {
   // Constructor
   public Team() {}
 
-  // Getters and Setters
-  public Long getId() {
-    return team_id;
+  public Team(String name, String description) {
+    this.name = name;
+    this.description = description;
   }
 
-  public void setId(Long team_id) {
-    this.team_id = team_id;
+  // Getters and Setters
+
+  // Only allow Get on id
+  public Long getId() {
+    return team_id;
   }
 
   public String getName() {
