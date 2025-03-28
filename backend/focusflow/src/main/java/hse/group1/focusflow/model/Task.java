@@ -1,6 +1,6 @@
 package hse.group1.focusflow.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +23,7 @@ public class Task {
   private String title;
   private String short_description;
   private String long_description;
-  private LocalDateTime due_date;
+  private Instant due_date;
 
   // Relationships
   @ManyToOne
@@ -73,11 +73,11 @@ public class Task {
     this.long_description = long_description;
   }
 
-  public LocalDateTime getDue_date() {
+  public Instant getDue_date() {
     return due_date;
   }
 
-  public void setDue_date(LocalDateTime due_date) {
+  public void setDue_date(Instant due_date) {
     this.due_date = due_date;
   }
 }

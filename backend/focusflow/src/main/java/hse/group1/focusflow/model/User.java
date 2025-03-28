@@ -7,7 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,8 @@ public class User {
   private String last_name;
 
   // Timestamps
-  private LocalDateTime created_at;
-  private LocalDateTime last_login;
+  private Instant created_at;
+  private Instant last_login;
 
   // Relationships
   @ManyToOne
@@ -79,19 +80,19 @@ public class User {
     this.last_name = last_name;
   }
 
-  public LocalDateTime getCreated_at() {
+  public Instant getCreated_at() {
     return created_at;
   }
 
-  public void setCreated_at(LocalDateTime created_at) {
+  public void setCreated_at(Instant created_at) {
     this.created_at = created_at;
   }
 
-  public LocalDateTime getLast_login() {
+  public Instant getLast_login() {
     return last_login;
   }
 
-  public void setLast_login(LocalDateTime last_login) {
+  public void setLast_login(Instant last_login) {
     this.last_login = last_login;
   }
 }
