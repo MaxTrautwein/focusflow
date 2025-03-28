@@ -17,7 +17,7 @@ public class Task {
   // Primary key
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long task_id;
 
   // Basic fields
   private String title;
@@ -42,11 +42,11 @@ public class Task {
 
   // Getters and Setters
   public Long getId() {
-    return id;
+    return task_id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setId(Long task_id) {
+    this.task_id = task_id;
   }
 
   public String getTitle() {

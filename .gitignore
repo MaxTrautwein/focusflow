@@ -28,4 +28,4 @@ replay_pid*
 
 # Personal settings
 .vscode/*
-!.vscode/settings.json
+.vscode/settings.json
