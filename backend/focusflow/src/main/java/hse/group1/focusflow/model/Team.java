@@ -10,7 +10,7 @@ public class Team {
 
   // Primary key
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   private Long team_id;
 
   // Basic fields

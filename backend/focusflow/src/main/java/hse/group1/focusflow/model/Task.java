@@ -16,7 +16,7 @@ public class Task {
 
   // Primary key
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   private Long task_id;
 
   // Basic fields
