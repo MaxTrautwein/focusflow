@@ -25,3 +25,7 @@ replay_pid*
 
 # IntelliJ IDEA no need in vscode
 .idea
+
+# Personal settings
+.vscode/*
+!.vscode/settings.json
