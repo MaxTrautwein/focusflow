@@ -7,11 +7,11 @@ To run and test this project, make sure you have:
 - Maven (installed and PATH variable set)
 
 ## Run the application
-You can verify both with:
+You can verify your setup with:
     java -version
     mvn -v
 
-You can start the application locally using:
+You can start the Spring Boot application using:
     cd backend/focusflow
     mvn spring-boot:run
 
