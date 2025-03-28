@@ -1,17 +1,13 @@
 package hse.group1.focusflow.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 import java.time.Instant;
 import java.util.List;
 
 @Entity
+@Table(name = "\"user\"") // user is reserved in postgres -> must quote name
 public class User {
 
   // Basic fields
@@ -36,16 +32,30 @@ public class User {
   @OneToMany(mappedBy = "user")
   private List<Task> tasks;
 
-  // Constructor
-  public User() {}
 
-  // Getters and Setters
-  public Long getId() {
-    return user_id;
+  /**
+   * @param email E-Mail of the User
+   * @param password Clear Text PW (Will be hashed & Salted)
+   * @param first_name First Name of User
+   * @param last_name Last Name of user
+   */
+  public User(String email, String password, String first_name, String last_name) {
+    this.email = email;
+    this.setPassword(password);
+    this.first_name = first_name;
+    this.last_name = last_name;
+    this.created_at = Instant.now();
   }
 
-  public void setId(Long user_id) {
-    this.user_id = user_id;
+  public User() {
+
+  }
+
+  // Getters and Setters
+
+  // Only allow Get on id
+  public Long getId() {
+    return user_id;
   }
 
   public String getEmail() {
@@ -56,12 +66,23 @@ public class User {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
+
+  /** Checks if a Given PW is correct
+   * @param password Plain text PW
+   * @return True if the Password is correct
+   */
+  public boolean passwordMatches(String password) {
+    Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    return encoder.matches(this.password, password);
   }
 
+  /**
+   * Save / Set a Password and Hash it with a salt
+   * @param password Password to be Hashed
+   */
   public void setPassword(String password) {
-    this.password = password;
+    Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    this.password = encoder.encode(password);
   }
 
   public String getFirst_name() {
@@ -84,15 +105,14 @@ public class User {
     return created_at;
   }
 
-  public void setCreated_at(Instant created_at) {
-    this.created_at = created_at;
-  }
-
   public Instant getLast_login() {
     return last_login;
   }
 
-  public void setLast_login(Instant last_login) {
-    this.last_login = last_login;
+  /**
+   * Updates the last_login with the current Time
+   */
+  public void updateLast_login() {
+    this.last_login = Instant.now();
   }
 }
