@@ -1,7 +1,5 @@
 package hse.group1.focusflow.model;
 
-import java.time.Instant;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -9,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.Instant;
 
 @Entity
 public class Task {
@@ -39,8 +38,15 @@ public class Task {
   // Constructor
   public Task() {}
 
-  public Task(String title, String short_description, String long_description, Instant due_date, User user,
-              TaskPriority priority, TaskStatus status) {
+  public Task(
+    String title,
+    String short_description,
+    String long_description,
+    Instant due_date,
+    User user,
+    TaskPriority priority,
+    TaskStatus status
+  ) {
     this.title = title;
     this.short_description = short_description;
     this.long_description = long_description;
@@ -88,4 +94,37 @@ public class Task {
   public void setDue_date(Instant due_date) {
     this.due_date = due_date;
   }
+
+  // Helper methods
+  /**
+   * Checks, if due date is in the past.
+   * @return true, if due date is in the past, false otherwise.
+   */
+  public boolean isOverdue() {
+    return due_date != null && due_date.isBefore(Instant.now());
+  }
+
+  /**
+   * Marks the task as completed by setting its status to CLOSED. 
+   */
+  public void markAsDone() {
+    this.status = TaskStatus.CLOSED;
+  }
+
+  /**
+   * Checks if the task is assigned to a user.
+   * @return true, if a user is assigned, false otherwise.
+   */
+  public boolean isAssigned() {
+    return this.user != null;
+  }
+
+  /**
+   * Assigns the task to a user.
+   * @param user the user to assign the task to.
+   */
+  public void assignTo(User user) {
+    this.user = user;
+  }
+
 }
