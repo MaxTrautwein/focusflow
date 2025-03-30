@@ -1,9 +1,19 @@
 package hse.group1.focusflow.model;
 
-import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.List;
+
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name = "\"user\"") // user is reserved in postgres -> must quote name
@@ -14,7 +24,11 @@ public class User {
   @GeneratedValue
   private Long user_id;
 
+  @NotNull(message = "Email cannot be null")
+  @Email(message = "Email should be valid")
   private String email;
+
+  @NotNull(message = "Password cannot be null")
   private String password;
   private String first_name;
   private String last_name;
@@ -30,6 +44,9 @@ public class User {
 
   @OneToMany(mappedBy = "user")
   private List<Task> tasks;
+
+  // Constructors
+  public User() {}
 
   /**
    * @param email E-Mail of the User
@@ -49,8 +66,6 @@ public class User {
     this.last_name = last_name;
     this.created_at = Instant.now();
   }
-
-  public User() {}
 
   // Getters and Setters
 
@@ -114,7 +129,7 @@ public class User {
   public boolean passwordMatches(String password) {
     Argon2PasswordEncoder encoder =
       Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-    return encoder.matches(this.password, password);
+    return encoder.matches(password, this.password); // First raw, then encoded pass
   }
 
   /**
