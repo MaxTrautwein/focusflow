@@ -91,6 +91,14 @@ public class User {
     return last_login;
   }
 
+  public Team getTeam() {
+    return team;
+  }
+
+  public void setTeam(Team team) {
+    this.team = team;
+  }
+
   // Helper methods
   /**
    * Updates the last_login with the current Time
