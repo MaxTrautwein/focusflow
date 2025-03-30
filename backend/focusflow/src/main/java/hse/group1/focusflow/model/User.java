@@ -11,7 +11,7 @@ public class User {
 
   // Basic fields
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long user_id;
 
   private String email;

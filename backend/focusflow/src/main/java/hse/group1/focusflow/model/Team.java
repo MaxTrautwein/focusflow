@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -14,7 +15,7 @@ public class Team {
 
   // Primary key
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long team_id;
 
   // Basic fields
@@ -22,8 +23,9 @@ public class Team {
   private String description;
 
   // Relationships
-  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<User> members = new ArrayList<>();
+
 
   // Constructor
   public Team() {}

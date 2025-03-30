@@ -10,7 +10,7 @@ To run and test this project, make sure you have:
 
 ### Install PostgreSQL 16
 
-- Download the installer from the official page: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+- Download the installer from the official page: https://www.postgresql.org/download/
 - Choose version **16**
 - During installation:
   - During the installation process you will be asked to choose a password. Look at [application.properties](src\main\resources\application.properties) for password and other information regarding the connection with the database.
