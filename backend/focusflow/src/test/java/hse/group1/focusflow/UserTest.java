@@ -26,33 +26,25 @@ public class UserTest {
     assertEquals("John", user.getFirst_name());
     assertEquals("Doe", user.getLast_name());
     assertNotNull(user.getCreated_at(), "created_at should be initialized");
-  }
 
-  @Test
-  public void testPasswordHashing() {
-    User user = new User("a@b.com", "123456", "A", "B");
-
-    // The plain text "123456" should match the hashed password
-    assertTrue(user.passwordMatches("123456"), "Correct password should match");
-
-    // A wrong password must not match
-    assertFalse(user.passwordMatches("wrong"), "Wrong password should fail");
-  }
-
-  @Test
-  public void testSetPassword() {
-    User user = new User("set@pw.com", "initial", "Set", "PW");
-    // Change password
-    user.setPassword("newSecret");
-
-    // Must match new password
-    assertTrue(
-      user.passwordMatches("newSecret"),
-      "Should match the new password"
+    user.setEmail("updated@example.com");
+    assertEquals(
+      "updated@example.com",
+      user.getEmail(),
+      "Email should be updated"
     );
 
-    // Must not match the old password
-    assertFalse(user.passwordMatches("initial"), "Old password should fail");
+    user.setFirst_name("Jane");
+    assertEquals("Jane", user.getFirst_name(), "First name should be updated");
+
+    user.setLast_name("Smith");
+    assertEquals("Smith", user.getLast_name(), "Last name should be updated");
+  }
+
+  @Test
+  public void testGetIdInitiallyNull() {
+    User user = new User("id@check.com", "password", "First", "Last");
+    assertNull(user.getId(), "ID should be null before persistence");
   }
 
   @Test
@@ -135,5 +127,32 @@ public class UserTest {
           v.getMessage().contains("valid")
       );
     assertTrue(hasEmailFormatViolation, "Expected an email format violation");
+  }
+
+  @Test
+  public void testPasswordHashing() {
+    User user = new User("a@b.com", "123456", "A", "B");
+
+    // The plain text "123456" should match the hashed password
+    assertTrue(user.passwordMatches("123456"), "Correct password should match");
+
+    // A wrong password must not match
+    assertFalse(user.passwordMatches("wrong"), "Wrong password should fail");
+  }
+
+  @Test
+  public void testSetPassword() {
+    User user = new User("set@pw.com", "initial", "Set", "PW");
+    // Change password
+    user.setPassword("newSecret");
+
+    // Must match new password
+    assertTrue(
+      user.passwordMatches("newSecret"),
+      "Should match the new password"
+    );
+
+    // Must not match the old password
+    assertFalse(user.passwordMatches("initial"), "Old password should fail");
   }
 }
