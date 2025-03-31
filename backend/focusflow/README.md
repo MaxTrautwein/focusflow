@@ -64,3 +64,14 @@ To see if the connection is working, you can reach it at:
 ```
     http://localhost:8080
 ```
+
+## 4. Unit tests
+
+To run the units tests which can be found in the folder:
+
+    src\test\java\hse\group1\focusflow
+
+You have to do the following in the terminal:
+
+    cd backend/focusflow
+    mvn test
