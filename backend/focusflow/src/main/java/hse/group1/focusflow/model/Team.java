@@ -20,6 +20,7 @@ public class Team {
   // Basic fields
   private String name;
   private String description;
+  private User teamLead;
 
   // Relationships
   @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -63,6 +64,14 @@ public class Team {
 
   public void setMembers(List<User> members) {
     this.members = members;
+  }
+
+  public User getTeamLead(){
+    return teamLead;
+  }
+
+  public void setTeamLead(User teamLead){
+    this.teamLead = teamLead;
   }
 
   // Helper methods
