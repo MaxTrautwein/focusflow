@@ -69,4 +69,19 @@ public class TeamTest{
         memberListSize = members.size();
         assertEquals(0, memberListSize, "Member has been removed");
     }
+
+
+    /**
+     * Test if a user is memeber of the team 
+     */
+    @Test 
+    public void testTeamHasMember(){
+        Team team = new Team("Test team Name", "Test team description");
+        User user = new User("test@example.com", "securePassword", "John", "Doe");
+        
+        /**Add member to team */
+        team.addMember(user);
+
+        assertEquals(true, team.hasMember(user), "User is not in member list");
+    }
 }
