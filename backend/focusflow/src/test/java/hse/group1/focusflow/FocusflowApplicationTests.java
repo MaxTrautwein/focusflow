@@ -8,9 +8,8 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(locations = "classpath:application-test.properties")
 class FocusflowApplicationTests {
 
-	//test causes errors so its commented
-	/*@Test
+	@Test
 	void contextLoads() {
 	}
-	*/
+	
 }
