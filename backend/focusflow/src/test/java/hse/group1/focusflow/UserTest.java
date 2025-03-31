@@ -42,6 +42,12 @@ public class UserTest {
   }
 
   @Test
+  public void testGetIdInitiallyNull() {
+    User user = new User("id@check.com", "password", "First", "Last");
+    assertNull(user.getId(), "ID should be null before persistence");
+  }
+
+  @Test
   public void testUpdateLastLogin() {
     User user = new User("some@user.com", "pw", "First", "Last");
     assertNull(user.getLast_login(), "Initially last_login should be null");
