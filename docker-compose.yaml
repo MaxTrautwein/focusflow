@@ -11,3 +11,8 @@ services:
     ports:
       - 5432:5432
     restart: unless-stopped
+  backend:
+    build: backend/focusflow/
+    ports:
+      - 8080:8080
+    restart: unless-stopped
