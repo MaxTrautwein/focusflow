@@ -5,11 +5,15 @@ import hse.group1.focusflow.model.Task;
 import hse.group1.focusflow.model.TaskPriority;
 import hse.group1.focusflow.model.TaskStatus;
 import hse.group1.focusflow.model.User;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.temporal.ChronoUnit;
 import java.time.Instant;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskTest {
@@ -17,10 +21,14 @@ public class TaskTest {
     private User TestUser1;
     private User TestUser2;
 
+    private Validator validator;
+
     @BeforeEach
-    public void beforeAll() {
+    public void beforeEach() {
         TestUser1 = new User("test@1.de","TestUser1","Test","1");
         TestUser2 = new User("test@2.de","TestUser2","Test","2");
+
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
 
@@ -44,6 +52,8 @@ public class TaskTest {
         assertEquals(TestUser1, task.getAssignee());
         assertEquals(priority, task.getPriority());
         assertEquals(status, task.getStatus());
+
+        assertTrue(validator.validate(task).isEmpty());
     }
 
     @Test
@@ -82,10 +92,16 @@ public class TaskTest {
                 Instant.now().minus(1, ChronoUnit.DAYS), TestUser1, TaskPriority.LOW, TaskStatus.OPEN);
         // 1 day ago is in the past
         assertTrue(task.getDue_date().isBefore(Instant.now()));
+
+        assertThat(validator.validate(task))
+                .extracting(ConstraintViolation::getMessage)
+                .containsOnly("due_date must be in the future");
+
         // set to 1 day in the future
         task.setDue_date(Instant.now().plus(1, ChronoUnit.DAYS));
         // tomorrow is in the future
         assertFalse(task.getDue_date().isBefore(Instant.now()));
+        assertTrue(validator.validate(task).isEmpty());
     }
 
     @Test
@@ -116,10 +132,16 @@ public class TaskTest {
         assertTrue(task.getDue_date().isBefore(Instant.now()));
         assertTrue(task.isOverdue());
 
+        assertThat(validator.validate(task))
+                .extracting(ConstraintViolation::getMessage)
+                .containsOnly("due_date must be in the future");
+
         task = new Task("title", "shortDescription","longDescription",
                 Instant.now().plus(1, ChronoUnit.DAYS), TestUser1, TaskPriority.LOW, TaskStatus.OPEN);
         assertFalse(task.getDue_date().isBefore(Instant.now()));
         assertFalse(task.isOverdue());
+
+        assertTrue(validator.validate(task).isEmpty());
     }
 
     @Test
@@ -152,6 +174,26 @@ public class TaskTest {
                 Instant.now(), TestUser1, TaskPriority.LOW, TaskStatus.OPEN);
         // The ID Is assigned by the DB, should be unset at this point
         assertNull(task.getId());
+    }
+
+    @Test
+    public void TestTitleMustBeSet(){
+        Task task = new Task("", "shortDescription","longDescription",
+                Instant.now().plus(1, ChronoUnit.DAYS), TestUser1, TaskPriority.LOW, TaskStatus.OPEN);
+
+        assertThat(validator.validate(task))
+                .extracting(ConstraintViolation::getMessage)
+                .containsOnly("title must be set");
+
+        task.setTitle(null);
+
+        assertThat(validator.validate(task))
+                .extracting(ConstraintViolation::getMessage)
+                .containsOnly("title must be set");
+
+        task.setTitle("a");
+
+        assertTrue(validator.validate(task).isEmpty());
     }
 
 }

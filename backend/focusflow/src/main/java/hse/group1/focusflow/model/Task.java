@@ -7,7 +7,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 @Entity
 public class Task {
@@ -18,9 +24,12 @@ public class Task {
   private Long task_id;
 
   // Basic fields
+  @NotNull(message = "title must be set")
+  @Size(min = 1, message = "title must be set")
   private String title;
   private String short_description;
   private String long_description;
+  @Future(message = "due_date must be in the future") // I'm not sue if that the best way to do that
   private Instant due_date;
 
   // Relationships
@@ -38,6 +47,16 @@ public class Task {
   // Constructor
   public Task() {}
 
+  /**
+   *
+   * @param title Title of the Task
+   * @param short_description a Short Description
+   * @param long_description a Long Description
+   * @param due_date a due date
+   * @param user the Assignee or NULL
+   * @param priority the Priority
+   * @param status the Status
+   */
   public Task(
     String title,
     String short_description,
@@ -120,10 +139,25 @@ public class Task {
   // Helper methods
   /**
    * Checks, if due date is in the past.
-   * @return true, if due date is in the past, false otherwise.
+   * @return true, if due date is in the past and the Task is still Pending, false otherwise.
    */
   public boolean isOverdue() {
-    return due_date != null && due_date.isBefore(Instant.now());
+    return IsOverdueIn(0, ChronoUnit.DAYS);
+  }
+
+  /**
+   * Checks if this Ticket Will be Due in
+   * @param amount Amount
+   * @param temporalUnit Minutes, Days, ...
+   * @return True if Overdue by then
+   */
+  public boolean IsOverdueIn(long amount, TemporalUnit temporalUnit){
+    // Items without Due Date or Closed ones can't be due
+    if (due_date == null || status == TaskStatus.CLOSED){
+      return false;
+    }
+
+    return due_date.isBefore(Instant.now().plus(amount,temporalUnit));
   }
 
   /**
