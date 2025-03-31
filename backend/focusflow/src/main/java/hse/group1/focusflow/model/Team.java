@@ -7,6 +7,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -20,6 +22,10 @@ public class Team {
   // Basic fields
   private String name;
   private String description;
+
+  @ManyToOne
+  @JoinColumn(name = "team_lead_id")
+  private User teamLead;
 
   // Relationships
   @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -63,6 +69,14 @@ public class Team {
 
   public void setMembers(List<User> members) {
     this.members = members;
+  }
+
+  public User getTeamLead(){
+    return teamLead;
+  }
+
+  public void setTeamLead(User teamLead){
+    this.teamLead = teamLead;
   }
 
   // Helper methods
