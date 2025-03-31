@@ -95,6 +95,28 @@ public class Task {
     this.due_date = due_date;
   }
 
+  public User getAssignee(){
+    return user;
+  }
+
+  public TaskStatus getStatus(){
+    return status;
+  }
+
+  public void setStatus(TaskStatus status){
+    this.status = status;
+  }
+
+  public TaskPriority getPriority() {
+    return priority;
+  }
+
+  public void setPriority(TaskPriority priority) {
+    this.priority = priority;
+  }
+
+
+
   // Helper methods
   /**
    * Checks, if due date is in the past.
@@ -102,13 +124,6 @@ public class Task {
    */
   public boolean isOverdue() {
     return due_date != null && due_date.isBefore(Instant.now());
-  }
-
-  /**
-   * Marks the task as completed by setting its status to CLOSED. 
-   */
-  public void markAsDone() {
-    this.status = TaskStatus.CLOSED;
   }
 
   /**
