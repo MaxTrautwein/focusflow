@@ -1,0 +1,13 @@
+services:
+  postgres:
+    image: postgres:16.8-alpine3.20
+    container_name: focusflow-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_pw
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./db/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped

@@ -11,6 +11,6 @@ Java with Springboot
 Springboot is widly known and has a lot of support. Everybody in the team knows this technology and has worked with it.
 
 ## 3. Database: 
-MySQL
+PostgresSQL
 
 Most used relational database, a lot of support, well documented and lot of community support.
