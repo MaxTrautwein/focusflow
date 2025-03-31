@@ -145,4 +145,13 @@ public class TaskTest {
 
         assertTrue(task.isAssigned());
     }
+
+    @Test
+    public void TestIdIsNull(){
+        Task task = new Task("title", "shortDescription","longDescription",
+                Instant.now(), TestUser1, TaskPriority.LOW, TaskStatus.OPEN);
+        // The ID Is assigned by the DB, should be unset at this point
+        assertNull(task.getId());
+    }
+
 }
