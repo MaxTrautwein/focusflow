@@ -97,7 +97,28 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>  
+				<groupId>org.apache.maven.plugins</groupId>  
+				<artifactId>maven-checkstyle-plugin</artifactId>  
+				<version>3.3.0</version>  
+				<configuration>  
+					<configLocation>src/main/resources/focusFlowCodeStyleChecker.xml</configLocation>
+				</configuration>  
+			</plugin> 
+
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>3.26.0</version>
+            <configuration>
+                <rulesets>
+                    <ruleset>src/main/resources/focusFlowPmdRuleSet.xml</ruleset>
+                </rulesets>
+                <targetJdk>21</targetJdk>
+                <failOnViolation>true</failOnViolation>
+            </configuration>
+        	</plugin>
 		</plugins>
 	</build>
-
 </project>
