@@ -10,12 +10,12 @@ Reviewed documents:
 
 [x] Existing code base of the core entities so far: https://github.com/dgrewe-hse/focusflow/tree/dev/backend/src/main/java/de/hse/focusflow
 
-
 Choosen type of review: [Technical Review (Formal review)](master_review_document.md)
 
 List of findings from the mentioned reviewed documents: [List of findings](ListOfFindings.md)
 
 ## Exercise 4.2 (5 Points): Retrospective
+
 Reflect on the review
 
 - Reviews are a helpful method to ensure the goal of the software project is met. Helps detecting issues, strengstens knowledge, makes sure the keep eyes on the actual use of the product an not to overengineer.
@@ -24,5 +24,79 @@ Reflect on the review
 
 - Peer reviews are necessary and implemented in our project and this review process hardened the necessity of it.
 
-
 ## Exercise 4.3 (10 Points): Static Code Analysis Tools for FocusFlow
+
+### Installing maven-checkstyle-plugin:
+
+    - 1.  Adding the maven-checkstyle-plugin to the pom.xml, put this in the <plugins>
+
+            Add this code:
+
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.3.0</version>
+                <configuration>
+                    <configLocation>src/main/resources/focusFlowCodeStyleChecker.xml</configLocation>
+                </configuration>
+            </plugin>
+
+    - 2.  Add a rule set in a .xml file to the project path: src/main/resources
+
+            Add this code to the file:
+
+            <?xml version="1.0"?>
+
+                <!DOCTYPE module PUBLIC
+                "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+                "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+                <module name="Checker">
+
+                    {...Define rule set here..}
+
+                </module>
+            </module>
+
+    - 3.  Execute this command "mvn checkstyle:check" in the project path "..\backend\focusflow".
+          If the the code has no errors the build will be successful.
+          If the code has errors it will fail the build and u can see teh error messages directly in the console.
+
+### Installing maven-pmd-plugin:
+
+    - 1. Adding the maven-pmd-plugin to the pom.xml, put this in the <plugins>:
+
+        Add this code:
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>3.26.0</version>
+            <configuration>
+                <rulesets>
+                    <ruleset>src/main/resources/focusFlowPmdRuleSet.xml</ruleset>
+                </rulesets>
+                <targetJdk>21</targetJdk>
+                <failOnViolation>true</failOnViolation>
+            </configuration>
+        </plugin>
+
+    - 2. Add a rule set in a .xml file to the project path: src/main/resources
+
+        Add this code to the file:
+
+        <?xml version="1.0"?>
+
+        <ruleset name="focusflow PMD Rules">
+
+            <description>
+                Custom rules for FocusFlow source code
+            </description>
+
+            {...Define rule set here..}
+
+        </ruleset>
+
+    - 3. Execute this command "mvn compile pmd:check" in the project path "..\backend\focusflow".
+         If the the code has no errors the build will be successful.
+         If the code has errors it will fail the build and u will find the error description in the pmd.xml file project path: "..\target\pmd.xml".
