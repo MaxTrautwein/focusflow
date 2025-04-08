@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<ruleset name="focusflow PMD Rules">
+
+    <description>
+        Custom rules for FocusFlow source code
+    </description>
+
+
+    <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+        <properties>
+            <property name="allowCommentedBlocks" value="false" />
+        </properties>
+    </rule>
+
+
+</ruleset>
