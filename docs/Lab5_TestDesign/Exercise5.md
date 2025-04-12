@@ -2,16 +2,90 @@
 
 ## Exercise 5.1 (20 Points): Black-Box Testing Techniques
 
-## Exercise 5.2 (20 Points): White-Box Testing Techniques
+### Equivalence Class Partitioning:
 
+| Equivalence Class                                                |  Result |                             Explenation                             | Example Password |
+| :--------------------------------------------------------------- | ------: | :-----------------------------------------------------------------: | :--------------: |
+| No Characters                                                    | Invalid |             Completely empty input violates all rules.              |                  |
+| >10 Characters                                                   | Invalid |                Too short to meet length requirement.                |      Ab1!A       |
+| <12 Characters                                                   | Invalid |                    Exceeds maximum length limit.                    |  Abcdef1!23456Q  |
+| 0 uppercase letter                                               | Invalid |          Meets other criteria but lacks uppercase letters.          |    abcdef!123    |
+| 0 lowercase letter                                               | Invalid |            No lowercase characters — rule not fulfilled.            |    ABCDEF!123    |
+| 0 special character                                              | Invalid |                   No special characters present.                    |    Abcdef1234    |
+| 10<=PW<=12 Characters, 0<uppercase, 0<lowercase, 0<special char. |   Valid | Meets all requirements: length, uppercase, lowercase, special char. |    Abc!def123    |
+
+### Boundary Value Analysis:
+
+| Boudary Value (Password length) |  Result |                          Explenation                          | Example Password |
+| :------------------------------ | ------: | :-----------------------------------------------------------: | :--------------: |
+| 9 Characters                    | Invalid |            Too short (1 char below valid minimum).            |    Abc!1234a     |
+| 10 Characters                   | Invalid | Exactly 10 characters, valid if it meets all character rules. |    A1bcdef!gh    |
+| 12 Characters                   | Invalid |           Maximum valid length and meets all rules.           |   Ab!1cdefgh12   |
+| 13 Characters                   | Invalid |                    Exceeds max length by 1                    |  Ab!1cdefgh123   |
+
+### Decision Table:
+
+| Attribute                            | No PW  | Too Long | Correct PW Lower | Correct PW Upper | No Upper | No Lower | No Special | Other Special |
+| ------------------------------------ | ------ | -------- | ---------------- | ---------------- | -------- | -------- | ---------- | ------------- |
+| Has Upper Case                       | no     | yes      | yes              | yes              | no       | yes      | yes        | yes           |
+| Has Lower Case                       | no     | yes      | yes              | yes              | yes      | no       | yes        | yes           |
+| Has Special Character (!@#$%^&\*)    | no     | yes      | yes              | yes              | yes      | yes      | no         | no            |
+| Has Other Special Char (<>,.:;³² µ-) | no     | no       | no               | no               | no       | no       | no         | yes           |
+| Length                               | 0      | 15       | 10               | 12               | 11       | 11       | 11         | 11            |
+| Result                               | Reject | Reject   | Accept           | Accept           | Reject   | Reject   | Reject     | Accept        |
+
+### Rational:
+
+#### No PW:
+
+An Empty Password is too Short and has no of the Other aspects and should Therefore be Rejected
+
+#### To Long:
+
+An Password that fulfills all usb Requirements but is too long should be Rejected
+
+#### Correct PW Lower:
+
+A Password that Fulfills all Sub Requirements at the Lower Acceptable Length Boundary should be Accepted
+
+#### Correct PW Upper:
+
+A Password that Fulfills all Sub Requirements at the Upper Acceptable Length Boundary should be Accepted
+
+#### No Upper, No Lower, No Special:
+
+Those all have the same Rational. If the Length is Correct but one of the Special Requirements fails The password should be Rejected.
+Other Special:
+While Some Special Chars where Provided as an Example We Should also check if other Special Characters will also be Accepted. Since those are also Special Characters and the Length is Correct we expect it to be Acceped
+
+#### Non Mentioned Cases:
+
+There are Other Possible cases Where Only One of the special Cases is Correct, I Argue that we can Ignore them as It should already fail with One of them Missung.
+Another Option would be to Test all Rejected Cases Cases where some Part is Missing with an already short Password. I would argue again that we can Skip those as they should already be rejected
+
+### Test Cases List:
+
+| ID  | Source              | Password        | Expected Result | Reason |
+| --- | ------------------- | --------------- | --------------- | ------ |
+|     | 2: No PW            |                 | Reject          |        |
+|     | 2: Too Long         | Aaaaaaa!!!!Aqda | Reject          |        |
+|     | 2: Correct PW Lower | Ab!qwertzu      | Accept          |        |
+|     | 2:Correct PW Upper  | Ab!qwertzuIo    | Accept          |        |
+|     | 2: No Upper         | aaaa!aaaaaa     | Reject          |        |
+|     | 2:No Lower          | AAAA!AAAAAA     | Reject          |        |
+|     | 2: No Special       | aaaaAaaaaaa     | Reject          |        |
+|     | 2: Other Special    | Aa\|aaaaaaaa    | Accept          |        |
+|     | 1: TODO             |                 |                 |        |
+
+## Exercise 5.2 (20 Points): White-Box Testing Techniques
 
 ### List of Test Cases
 
 This section documents the white-box test cases derived from the internal logic of the createTask(...) method in the TaskServiceImpl.java class. The goal is to cover all execution paths, including both valid and invalid conditions with an explanation for each.
 
-Repository: https://github.com/dgrewe-hse/focusflow/tree/dev/backend/src/main/java/de/hse/focusflow/repository  
+Repository: https://github.com/dgrewe-hse/focusflow/tree/dev/backend/src/main/java/de/hse/focusflow/repository
 
-Services: https://github.com/dgrewe-hse/focusflow/tree/dev/backend/src/main/java/de/hse/focusflow/service 
+Services: https://github.com/dgrewe-hse/focusflow/tree/dev/backend/src/main/java/de/hse/focusflow/service
 
 ---
 
@@ -24,7 +98,8 @@ Services: https://github.com/dgrewe-hse/focusflow/tree/dev/backend/src/main/java
 
 #### Invalid Test Cases
 
-##### Missing Required Fields  
+##### Missing Required Fields
+
 These test cases ensure that the method properly rejects incomplete data by validating the presence of all required inputs using validateRequiredFields(...).
 
 - Missing title  
@@ -44,7 +119,8 @@ These test cases ensure that the method properly rejects incomplete data by vali
 
 ---
 
-##### Invalid Values  
+##### Invalid Values
+
 These test cases target additional input constraints enforced in the createTask(...) method.
 
 - Title too short  
@@ -61,7 +137,8 @@ These test cases target additional input constraints enforced in the createTask(
 
 ---
 
-##### Invalid References  
+##### Invalid References
+
 These test cases test how the method handles IDs pointing to non-existent database entities.
 
 - Assignee does not exist  
@@ -78,14 +155,11 @@ These test cases test how the method handles IDs pointing to non-existent databa
 
 ---
 
-##### Logical Constraint Failures  
+##### Logical Constraint Failures
+
 These test cases target logic constraints not directly tied to field values but to business rules in the method.
 
 - Double assigning a task (assignee and team)  
   Both assigneeId and teamId are set → should throw IllegalArgumentException ("A task cannot be assigned to both a user and a team simultaneously").
-
-
-
-
 
 ## (Optional) Exercise 5.3 (10 Points): Implementation
