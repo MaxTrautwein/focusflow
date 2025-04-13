@@ -67,15 +67,15 @@ Another Option would be to Test all Rejected Cases Cases where some Part is Miss
 
 | ID  | Source              | Password        | Expected Result | Reason |
 | --- | ------------------- | --------------- | --------------- | ------ |
-|     | 2: No PW            |                 | Reject          |        |
-|     | 2: Too Long         | Aaaaaaa!!!!Aqda | Reject          |        |
-|     | 2: Correct PW Lower | Ab!qwertzu      | Accept          |        |
-|     | 2:Correct PW Upper  | Ab!qwertzuIo    | Accept          |        |
-|     | 2: No Upper         | aaaa!aaaaaa     | Reject          |        |
-|     | 2:No Lower          | AAAA!AAAAAA     | Reject          |        |
-|     | 2: No Special       | aaaaAaaaaaa     | Reject          |        |
-|     | 2: Other Special    | Aa\|aaaaaaaa    | Accept          |        |
-|     | 1: TODO             |                 |                 |        |
+|  01   | 2: No PW            |                 | Reject | too Short Passwords will not be accepted. no chars at all is choses as nothing could cause additinal issues  |
+|  02   | 2: Too Long         | Aaaaaaa!!!!Aqda | Reject | a otherwise valid pw will be rejected if the Length is too long       |
+|  03   | 2: Correct PW Lower | Ab!qwertzu      | Accept | Minimum Valid Length shall be accepted       |
+|  04   | 2:Correct PW Upper  | Ab!qwertzuIo    | Accept | Maximum Valid Length shall be accepted       |
+|  05   | 2: No Upper         | aaaa!aaaaaa     | Reject | a Password that fullfils the Length requierment but is missing an Upper case  shall be rejected      |
+|  06   | 2: No Lower          | AAAA!AAAAAA     | Reject | a Password that fullfils the Length requierment but is missing an lower case  shall be rejected         |
+|  07   | 2: No Special       | aaaaAaaaaaa     | Reject | a Password that fullfils the Length requierment but is missing an Special char shall be rejected         |
+|  08   | 2: Other Special    | Aa\|--;²aaa    | Accept | a Password that fulfills the Length requierment and has other kinds of special chars with upper and lower case shall be acceped       |
+|  09   | 1: TODO             |                 |                 |        |
 
 ## Exercise 5.2 (20 Points): White-Box Testing Techniques
 
