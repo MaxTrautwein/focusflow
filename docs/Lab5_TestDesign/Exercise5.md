@@ -19,8 +19,8 @@
 | Boudary Value (Password length) |  Result |                          Explenation                          | Example Password |
 | :------------------------------ | ------: | :-----------------------------------------------------------: | :--------------: |
 | 9 Characters                    | Invalid |            Too short (1 char below valid minimum).            |    Abc!1234a     |
-| 10 Characters                   | Invalid | Exactly 10 characters, valid if it meets all character rules. |    A1bcdef!gh    |
-| 12 Characters                   | Invalid |           Maximum valid length and meets all rules.           |   Ab!1cdefgh12   |
+| 10 Characters                   | depends | Exactly 10 characters, valid if it meets all character rules. | (Valid Sample)   A1bcdef!gh <br> (Invalid Sample) A1bcdef1gh |
+| 12 Characters                   | depends |           Maximum valid length and meets all rules.           | (Valid Sample)  Ab!1cdefgh12 <br> (Invalid Sample) Ab41cdefgh12  |
 | 13 Characters                   | Invalid |                    Exceeds max length by 1                    |  Ab!1cdefgh123   |
 
 ### Decision Table:
