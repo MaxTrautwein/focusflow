@@ -65,20 +65,18 @@ Another Option would be to Test all Rejected Cases Cases where some Part is Miss
 
 ### Test Cases List:
 
-| ID  | Source                                            | Password        | Expected Result | Reason                                                                                                                          |
-| --- | ------------------------------------------------- | --------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| 01  | 2: No PW                                          |                 | Reject          | too Short Passwords will not be accepted. no chars at all is choses as nothing could cause additinal issues                     |
-| 02  | 2: Too Long                                       | Aaaaaaa!!!!Aqda | Reject          | a otherwise valid pw will be rejected if the Length is too long                                                                 |
-| 03  | 2: Correct PW Lower                               | Ab!qwertzu      | Accept          | Minimum Valid Length shall be accepted                                                                                          |
-| 04  | 2:Correct PW Upper                                | Ab!qwertzuIo    | Accept          | Maximum Valid Length shall be accepted                                                                                          |
-| 05  | 2: No Upper                                       | aaaa!aaaaaa     | Reject          | a Password that fullfils the Length requierment but is missing an Upper case shall be rejected                                  |
-| 06  | 2: No Lower                                       | AAAA!AAAAAA     | Reject          | a Password that fullfils the Length requierment but is missing an lower case shall be rejected                                  |
-| 07  | 2: No Special                                     | aaaaAaaaaaa     | Reject          | a Password that fullfils the Length requierment but is missing an Special char shall be rejected                                |
-| 08  | 2: Other Special                                  | Aa\|--;²aaa     | Accept          | a Password that fulfills the Length requierment and has other kinds of special chars with upper and lower case shall be acceped |
-| 09  | 2: Lower Boundary not reached (PW length)         | Abc!1234a       | Reject          | Password on sign too short                                                                                                      |
-| 10  | 2: Lower minimum Boundary (PW length)             | A1bcdef!gh      | Accept          | Password exact minimum of 10 signs                                                                                              |
-| 11  | 2: Upper maximum Boundary (PW length)             | Ab!1cdefgh12    | Accept          | Password exact maximum of 12 signs                                                                                              |
-| 12  | 2: 2: Upper maximum Boundary exceeded (PW length) | Ab!1cdefgh123   | Reject          | Password to one sign too long                                                                                                   |
+| ID  | Source                                         | Password        | Expected Result | Reason                                                                                                                          |
+| --- | ---------------------------------------------- | --------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 01  | 2: No PW                                       |                 | Reject          | too Short Passwords will not be accepted. no chars at all is choses as nothing could cause additinal issues                     |
+| 02  | 2: Too Long                                    | Aaaaaaa!!!!Aqda | Reject          | a otherwise valid pw will be rejected if the Length is too long                                                                 |
+| 03  | 2: Correct PW Lower                            | Ab!qwertzu      | Accept          | Minimum Valid Length shall be accepted                                                                                          |
+| 04  | 2:Correct PW Upper                             | Ab!qwertzuIo    | Accept          | Maximum Valid Length shall be accepted                                                                                          |
+| 05  | 2: No Upper                                    | aaaa!aaaaaa     | Reject          | a Password that fullfils the Length requierment but is missing an Upper case shall be rejected                                  |
+| 06  | 2: No Lower                                    | AAAA!AAAAAA     | Reject          | a Password that fullfils the Length requierment but is missing an lower case shall be rejected                                  |
+| 07  | 2: No Special                                  | aaaaAaaaaaa     | Reject          | a Password that fullfils the Length requierment but is missing an Special char shall be rejected                                |
+| 08  | 2: Other Special                               | Aa\|--;²aaa     | Accept          | a Password that fulfills the Length requierment and has other kinds of special chars with upper and lower case shall be acceped |
+| 09  | 1: Lower Boundary not reached (PW length)      | Abc!1234a       | Reject          | Password on sign too short                                                                                                      |
+| 10  | 1: Upper maximum Boundary exceeded (PW length) | Ab!1cdefgh123   | Reject          | Password to one sign too long                                                                                                   |
 
 ## Exercise 5.2 (20 Points): White-Box Testing Techniques
 
