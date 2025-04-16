@@ -1,4 +1,4 @@
-# Exercise 6 - 
+# Exercise 6 - Mock Testing 
 
 ## Exercise 6.1 (10 Points): Unit Testing of Models
 
