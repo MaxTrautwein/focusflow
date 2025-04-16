@@ -3,6 +3,7 @@ package hse.group1.focusflow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -177,4 +178,51 @@ public class TeamTest{
         assertNotNull(teamLeader.getCreated_at(), "created_at should be initialized");
     }
 
+     /**
+     * Test if a non member can be removed from the list of member's 
+     */
+    @Test
+    public void removeNonMember(){
+        Team team = new Team("Test team Name", "Test team description");
+        User user = new User("test@example.com", "securePassword", "John", "Doe");
+        User user1 = new User("test@example.com", "securePassword", "Lisa", "Low");
+        
+        team.addMember(user1);
+        int memberListSizeBeforeDeletingNonMember = team.getMembers().size();
+        team.removeMember(user);
+        int memberListSizeAfterDeletingNonMember = team.getMembers().size();
+
+        assertEquals(memberListSizeBeforeDeletingNonMember, memberListSizeAfterDeletingNonMember, "Member list size decreased after removing non member");
+    }
+
+    /**
+     * Test if a null value can be added to the team member list
+     */
+    @Test
+    public void addingNullToTeamMemberList(){
+        Team team = new Team("Test team Name", "Test team description");
+        
+        int memberListSizeBeforeAddingNull = team.getMembers().size();
+        team.addMember(null);
+        int memberListSizeAfterAddingNull = team.getMembers().size();
+        assertEquals(memberListSizeBeforeAddingNull, memberListSizeAfterAddingNull, "Member list size increased after adding null value");
+        
+        }
+
+
+    /**
+     * Test if a null value can be removed from the team member list
+     */
+    @Test
+    public void removeNullFromTeamMemberList(){
+        Team team = new Team("Test team Name", "Test team description");
+        User user = new User("test@example.com", "securePassword", "John", "Doe");
+
+
+        int memberListSizeBeforeRemovingNull = team.getMembers().size();
+        team.addMember(user);
+        team.removeMember(null);
+        int memberListSizeAfterRemovingNull = team.getMembers().size(); 
+        assertEquals(memberListSizeBeforeRemovingNull, memberListSizeAfterRemovingNull, "Member list size decreased after removing null value");
+    }
 }
