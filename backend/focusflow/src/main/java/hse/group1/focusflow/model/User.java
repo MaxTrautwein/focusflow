@@ -1,11 +1,5 @@
 package hse.group1.focusflow.model;
 
-import java.time.Instant;
-import java.util.List;
-
-import jakarta.validation.constraints.NotNull;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,6 +8,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.List;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 @Entity
 @Table(name = "\"user\"") // user is reserved in postgres -> must quote name
@@ -30,6 +28,7 @@ public class User {
 
   @NotNull(message = "Password cannot be null")
   private String password;
+
   private String first_name;
   private String last_name;
 
