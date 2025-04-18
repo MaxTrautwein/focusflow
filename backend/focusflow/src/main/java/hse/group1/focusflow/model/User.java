@@ -1,5 +1,6 @@
 package hse.group1.focusflow.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,7 +21,8 @@ public class User {
   // Basic fields
   @Id
   @GeneratedValue
-  private Long user_id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @NotNull(message = "Email cannot be null")
   @Email(message = "Email should be valid")
@@ -29,12 +31,18 @@ public class User {
   @NotNull(message = "Password cannot be null")
   private String password;
 
-  private String first_name;
-  private String last_name;
+  @Column(name = "first_name")
+  private String firstName;
+
+  @Column(name = "last_name")
+  private String lastName;
 
   // Timestamps
-  private Instant created_at;
-  private Instant last_login;
+  @Column(name = "created_at")
+  private Instant createdAt;
+
+  @Column(name = "last_login")
+  private Instant lastLogin;
 
   // Relationships
   @ManyToOne
@@ -56,21 +64,21 @@ public class User {
   public User(
     String email,
     String password,
-    String first_name,
-    String last_name
+    String firstName,
+    String lastName
   ) {
     this.email = email;
     this.setPassword(password);
-    this.first_name = first_name;
-    this.last_name = last_name;
-    this.created_at = Instant.now();
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.createdAt = Instant.now();
   }
 
   // Getters and Setters
 
   // Only allow Get on id
   public Long getId() {
-    return user_id;
+    return userId;
   }
 
   public String getEmail() {
@@ -81,28 +89,35 @@ public class User {
     this.email = email;
   }
 
-  public String getFirst_name() {
-    return first_name;
+
+  public void setPassword(String password) {
+    Argon2PasswordEncoder encoder =
+      Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    this.password = encoder.encode(password);
   }
 
-  public void setFirst_name(String first_name) {
-    this.first_name = first_name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public String getLast_name() {
-    return last_name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
-  public void setLast_name(String last_name) {
-    this.last_name = last_name;
+  public String getLastName() {
+    return lastName;
   }
 
-  public Instant getCreated_at() {
-    return created_at;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
-  public Instant getLast_login() {
-    return last_login;
+  public Instant getCreatedAt() {
+    return createdAt;
+  }
+
+  public Instant getLastLogin() {
+    return lastLogin;
   }
 
   public Team getTeam() {
@@ -113,12 +128,20 @@ public class User {
     this.team = team;
   }
 
+  public List<Task> getTasks() {
+    return tasks;
+  }
+
+  public void setTasks(List<Task> tasks) {
+    this.tasks = tasks;
+  }
+
   // Helper methods
   /**
    * Updates the last_login with the current Time
    */
-  public void updateLast_login() {
-    this.last_login = Instant.now();
+  public void updateLastLogin() {
+    this.lastLogin = Instant.now();
   }
 
   /** Checks if a Given PW is correct
@@ -128,16 +151,6 @@ public class User {
   public boolean passwordMatches(String password) {
     Argon2PasswordEncoder encoder =
       Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-    return encoder.matches(password, this.password); // First raw, then encoded pass
-  }
-
-  /**
-   * Save / Set a Password and Hash it with a salt
-   * @param password Password to be Hashed
-   */
-  public void setPassword(String password) {
-    Argon2PasswordEncoder encoder =
-      Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-    this.password = encoder.encode(password);
+    return encoder.matches(password, this.password);
   }
 }
