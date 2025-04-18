@@ -1,10 +1,6 @@
 package hse.group1.focusflow;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import hse.group1.focusflow.model.Team;
 import hse.group1.focusflow.model.User;
@@ -23,9 +19,9 @@ public class UserTest {
     User user = new User("test@example.com", "securePassword", "John", "Doe");
 
     assertEquals("test@example.com", user.getEmail());
-    assertEquals("John", user.getFirst_name());
-    assertEquals("Doe", user.getLast_name());
-    assertNotNull(user.getCreated_at(), "created_at should be initialized");
+    assertEquals("John", user.getFirstName());
+    assertEquals("Doe", user.getLastName());
+    assertNotNull(user.getCreatedAt(), "createdAt should be initialized");
 
     user.setEmail("updated@example.com");
     assertEquals(
@@ -34,32 +30,29 @@ public class UserTest {
       "Email should be updated"
     );
 
-    user.setFirst_name("Jane");
-    assertEquals("Jane", user.getFirst_name(), "First name should be updated");
+    user.setFirstName("Jane");
+    assertEquals("Jane", user.getFirstName(), "First name should be updated");
 
-    user.setLast_name("Smith");
-    assertEquals("Smith", user.getLast_name(), "Last name should be updated");
+    user.setLastName("Smith");
+    assertEquals("Smith", user.getLastName(), "Last name should be updated");
   }
 
   @Test
-  public void testGetIdInitiallyNull() {
+  public void testGetUserIdInitiallyNull() {
     User user = new User("id@check.com", "password", "First", "Last");
-    assertNull(user.getId(), "ID should be null before persistence");
+    assertNull(user.getUserId(), "userId should be null before persistence");
   }
 
   @Test
   public void testUpdateLastLogin() {
     User user = new User("some@user.com", "pw", "First", "Last");
-    assertNull(user.getLast_login(), "Initially last_login should be null");
+    assertNull(user.getLastLogin(), "Initially lastLogin should be null");
 
     // Call the helper
-    user.updateLast_login();
+    user.updateLastLogin();
 
-    // Now last_login should not be null
-    assertNotNull(
-      user.getLast_login(),
-      "last_login should be set after update"
-    );
+    // Now lastLogin should not be null
+    assertNotNull(user.getLastLogin(), "lastLogin should be set after update");
   }
 
   @Test

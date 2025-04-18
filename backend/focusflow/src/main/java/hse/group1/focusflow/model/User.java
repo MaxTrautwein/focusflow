@@ -1,5 +1,6 @@
 package hse.group1.focusflow.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 @Table(name = "\"user\"") // user is reserved in postgres -> must quote name
 public class User {
 
-  // Basic fields
+  // Primary key
   @Id
   @GeneratedValue
   @Column(name = "user_id")
@@ -29,6 +30,7 @@ public class User {
   private String email;
 
   @NotNull(message = "Password cannot be null")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
 
   @Column(name = "first_name")
@@ -56,10 +58,10 @@ public class User {
   public User() {}
 
   /**
-   * @param email E-Mail of the User
-   * @param password Clear Text PW (Will be hashed & Salted)
-   * @param first_name First Name of User
-   * @param last_name Last Name of user
+   * @param email     E-Mail of the User
+   * @param password  Clear Text PW (Will be hashed & Salted)
+   * @param firstName First Name of User
+   * @param lastName  Last Name of user
    */
   public User(
     String email,
@@ -76,8 +78,7 @@ public class User {
 
   // Getters and Setters
 
-  // Only allow Get on id
-  public Long getId() {
+  public Long getUserId() {
     return userId;
   }
 
@@ -89,6 +90,9 @@ public class User {
     this.email = email;
   }
 
+  public String getPassword() {
+    return password;
+  }
 
   public void setPassword(String password) {
     Argon2PasswordEncoder encoder =
@@ -137,16 +141,16 @@ public class User {
   }
 
   // Helper methods
-  /**
-   * Updates the last_login with the current Time
-   */
+
+  // Updates the lastLogin with the current time
   public void updateLastLogin() {
     this.lastLogin = Instant.now();
   }
 
-  /** Checks if a Given PW is correct
-   * @param password Plain text PW
-   * @return True if the Password is correct
+  /**
+   * Checks if a given password is correct
+   * @param password Plain text password
+   * @return True if the password matches the hashed one
    */
   public boolean passwordMatches(String password) {
     Argon2PasswordEncoder encoder =
