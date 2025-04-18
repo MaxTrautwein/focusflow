@@ -2,11 +2,14 @@ package hse.group1.focusflow.service.impl;
 
 import hse.group1.focusflow.model.Team;
 import hse.group1.focusflow.model.User;
+import hse.group1.focusflow.model.dto.LoginDto;
 import hse.group1.focusflow.model.dto.UserRegistrationDto;
 import hse.group1.focusflow.repository.TeamRepository;
 import hse.group1.focusflow.repository.UserRepository;
 import hse.group1.focusflow.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,26 +27,58 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void register(UserRegistrationDto dto) {
-    // Optional: Check if user already exists
+    // Check if user already exists
     if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-      throw new IllegalArgumentException("Email already in use");
+      throw new ResponseStatusException(
+        HttpStatus.BAD_REQUEST,
+        "Email already in use"
+      );
     }
 
     // Map DTO to Entity
     User user = new User();
     user.setEmail(dto.getEmail());
-    user.setPassword(dto.getPassword()); // get hashed in User#setPassword()
+    user.setPassword(dto.getPassword()); // hashed in User#setPassword()
     user.setFirstName(dto.getFirstName());
     user.setLastName(dto.getLastName());
 
-    // Optional: assign to team
+    // Assign to team
     if (dto.getTeamId() != null) {
       Team team = teamRepository
         .findById(dto.getTeamId())
-        .orElseThrow(() -> new IllegalArgumentException("Team not found"));
+        .orElseThrow(() ->
+          new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team not found")
+        );
       user.setTeam(team);
     }
 
     userRepository.save(user);
+  }
+
+  @Override
+  public User login(LoginDto dto) {
+    // Fetch user by email or reject
+    User user = userRepository
+      .findByEmail(dto.getEmail())
+      .orElseThrow(() ->
+        new ResponseStatusException(
+          HttpStatus.UNAUTHORIZED,
+          "Invalid credentials"
+        )
+      );
+
+    // Verify password
+    if (!user.passwordMatches(dto.getPassword())) {
+      throw new ResponseStatusException(
+        HttpStatus.UNAUTHORIZED,
+        "Invalid credentials"
+      );
+    }
+
+    // Update last login timestamp
+    user.updateLastLogin();
+    userRepository.save(user);
+
+    return user;
   }
 }
