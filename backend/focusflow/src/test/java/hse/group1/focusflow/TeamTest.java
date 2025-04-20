@@ -185,15 +185,10 @@ public class TeamTest{
     public void removeNonMember(){
         Team team = new Team("Test team Name", "Test team description");
         User user = new User("test@example.com", "securePassword", "John", "Doe");
-        User user1 = new User("test@example.com", "securePassword", "Lisa", "Low");
-        
-        team.addMember(user1);
-        int memberListSizeBeforeDeletingNonMember = team.getMembers().size();
-        team.removeMember(user);
-        int memberListSizeAfterDeletingNonMember = team.getMembers().size();
+  
+        assertThrows(IllegalArgumentException.class, ()-> team.removeMember(user), "Removing non member should throw IllegalArgumentException");
 
-        assertEquals(memberListSizeBeforeDeletingNonMember, memberListSizeAfterDeletingNonMember, "Member list size decreased after removing non member");
-    }
+        }
 
     /**
      * Test if a null value can be added to the team member list
@@ -202,11 +197,7 @@ public class TeamTest{
     public void addingNullToTeamMemberList(){
         Team team = new Team("Test team Name", "Test team description");
         
-        int memberListSizeBeforeAddingNull = team.getMembers().size();
-        team.addMember(null);
-        int memberListSizeAfterAddingNull = team.getMembers().size();
-        assertEquals(memberListSizeBeforeAddingNull, memberListSizeAfterAddingNull, "Member list size increased after adding null value");
-        
+        assertThrows(NullPointerException.class, ()-> team.addMember(null), "Adding null value to team member list should throw NullPointerException");
         }
 
 
@@ -216,13 +207,8 @@ public class TeamTest{
     @Test
     public void removeNullFromTeamMemberList(){
         Team team = new Team("Test team Name", "Test team description");
-        User user = new User("test@example.com", "securePassword", "John", "Doe");
 
-
-        int memberListSizeBeforeRemovingNull = team.getMembers().size();
-        team.addMember(user);
-        team.removeMember(null);
-        int memberListSizeAfterRemovingNull = team.getMembers().size(); 
-        assertEquals(memberListSizeBeforeRemovingNull, memberListSizeAfterRemovingNull, "Member list size decreased after removing null value");
+        assertThrows(NullPointerException.class, ()-> team.removeMember(null), "Removing null value to team member list should throw NullPointerException");
     }
+
 }
