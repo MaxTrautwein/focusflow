@@ -139,7 +139,26 @@ public class UserTest {
           v.getMessage().contains("valid")
       );
     assertTrue(hasEmailFormatViolation, "Expected an email format violation");
-  }
+
+    
+    /**Check for different type of wrong emails*/
+    user.setEmail("plainTestEmail");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("@plainTestEmail.edu");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("plainTestEmail@.de");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("plainTestEmail@test..com");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+    }
+
 
   @Test
   public void testPasswordHashing() {
