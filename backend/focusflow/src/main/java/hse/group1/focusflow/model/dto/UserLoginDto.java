@@ -3,7 +3,7 @@ package hse.group1.focusflow.model.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public class LoginDto {
+public class UserLoginDto {
 
   @NotBlank
   @Email
@@ -12,9 +12,9 @@ public class LoginDto {
   @NotBlank
   private String password;
 
-  public LoginDto() {}
+  public UserLoginDto() {}
 
-  public LoginDto(String email, String password) {
+  public UserLoginDto(String email, String password) {
     this.email = email;
     this.password = password;
   }

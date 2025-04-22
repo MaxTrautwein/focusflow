@@ -2,8 +2,10 @@ package hse.group1.focusflow.service.impl;
 
 import hse.group1.focusflow.model.Team;
 import hse.group1.focusflow.model.User;
-import hse.group1.focusflow.model.dto.LoginDto;
+import hse.group1.focusflow.model.dto.UserDto;
+import hse.group1.focusflow.model.dto.UserLoginDto;
 import hse.group1.focusflow.model.dto.UserRegistrationDto;
+import hse.group1.focusflow.model.dto.UserUpdateDto;
 import hse.group1.focusflow.repository.TeamRepository;
 import hse.group1.focusflow.repository.UserRepository;
 import hse.group1.focusflow.service.UserService;
@@ -56,7 +58,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User login(LoginDto dto) {
+  public User login(UserLoginDto dto) {
     // Fetch user by email or reject
     User user = userRepository
       .findByEmail(dto.getEmail())
@@ -80,5 +82,48 @@ public class UserServiceImpl implements UserService {
     userRepository.save(user);
 
     return user;
+  }
+
+  @Override
+  public UserDto getProfile(String email) {
+    User user = userRepository
+      .findByEmail(email)
+      .orElseThrow(() ->
+        new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+      );
+
+    return new UserDto(
+      user.getUserId(),
+      user.getEmail(),
+      user.getFirstName(),
+      user.getLastName(),
+      user.getTeam() != null ? user.getTeam().getId() : null
+    );
+  }
+
+  @Override
+  public UserDto updateProfile(String email, UserUpdateDto update) {
+    User user = userRepository
+      .findByEmail(email)
+      .orElseThrow(() ->
+        new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+      );
+
+    user.setEmail(update.getEmail());
+    if (update.getPassword() != null && !update.getPassword().isBlank()) {
+      user.setPassword(update.getPassword());
+    }
+    user.setFirstName(update.getFirstName());
+    user.setLastName(update.getLastName());
+
+    userRepository.save(user);
+
+    return new UserDto(
+      user.getUserId(),
+      user.getEmail(),
+      user.getFirstName(),
+      user.getLastName(),
+      user.getTeam() != null ? user.getTeam().getId() : null
+    );
   }
 }
