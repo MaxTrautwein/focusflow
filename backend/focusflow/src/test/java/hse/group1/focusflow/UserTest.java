@@ -1,6 +1,11 @@
 package hse.group1.focusflow;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hse.group1.focusflow.model.Team;
 import hse.group1.focusflow.model.User;
@@ -8,6 +13,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,10 +31,9 @@ public class UserTest {
 
     user.setEmail("updated@example.com");
     assertEquals(
-      "updated@example.com",
-      user.getEmail(),
-      "Email should be updated"
-    );
+        "updated@example.com",
+        user.getEmail(),
+        "Email should be updated");
 
     user.setFirstName("Jane");
     assertEquals("Jane", user.getFirstName(), "First name should be updated");
@@ -46,7 +51,7 @@ public class UserTest {
   @Test
   public void testUpdateLastLogin() {
     User user = new User("some@user.com", "pw", "First", "Last");
-    assertNull(user.getLastLogin(), "Initially lastLogin should be null");
+    assertNull(user.getLastLogin(), "Initially last_login should be null");
 
     // Call the helper
     user.updateLastLogin();
@@ -85,18 +90,15 @@ public class UserTest {
 
     // Expect at least one violation because email is null
     assertFalse(
-      violations.isEmpty(),
-      "Expected constraint violations when email is null"
-    );
+        violations.isEmpty(),
+        "Expected constraint violations when email is null");
 
     // Check that one of the violations is specifically about email being null
     boolean hasNotNullViolation = violations
-      .stream()
-      .anyMatch(
-        v ->
-          v.getPropertyPath().toString().equals("email") &&
-          v.getMessage().contains("cannot be null")
-      );
+        .stream()
+        .anyMatch(
+            v -> v.getPropertyPath().toString().equals("email") &&
+                v.getMessage().contains("cannot be null"));
     assertTrue(hasNotNullViolation, "Expected a NotNull violation on email");
   }
 
@@ -108,18 +110,32 @@ public class UserTest {
 
     // Expect a violation for invalid email format
     assertFalse(
-      violations.isEmpty(),
-      "Expected constraint violations when email format is invalid"
-    );
+        violations.isEmpty(),
+        "Expected constraint violations when email format is invalid");
 
     boolean hasEmailFormatViolation = violations
-      .stream()
-      .anyMatch(
-        v ->
-          v.getPropertyPath().toString().equals("email") &&
-          v.getMessage().contains("valid")
-      );
+        .stream()
+        .anyMatch(
+            v -> v.getPropertyPath().toString().equals("email") &&
+                v.getMessage().contains("valid"));
     assertTrue(hasEmailFormatViolation, "Expected an email format violation");
+
+    /** Check for different type of wrong emails */
+    user.setEmail("plainTestEmail");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("@plainTestEmail.edu");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("plainTestEmail@.de");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("plainTestEmail@test..com");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
   }
 
   @Test
@@ -141,11 +157,22 @@ public class UserTest {
 
     // Must match new password
     assertTrue(
-      user.passwordMatches("newSecret"),
-      "Should match the new password"
-    );
+        user.passwordMatches("newSecret"),
+        "Should match the new password");
 
     // Must not match the old password
     assertFalse(user.passwordMatches("initial"), "Old password should fail");
+  }
+
+  @Test
+  public void testEmptyPassword() {
+    User user = new User("set@pw.com", "initial", "Set", "");
+
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("                      "),
+        "Should throw IllegalArgumentException when setting empty password");
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("         "),
+        "Should throw IllegalArgumentException when setting empty password");
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("   "),
+        "Should throw IllegalArgumentException when setting empty password");
   }
 }
