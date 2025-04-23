@@ -3,6 +3,7 @@ package hse.group1.focusflow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -161,5 +162,38 @@ public class TeamTest {
     assertEquals("Doe", teamLeader.getLastName());
     assertNotNull(teamLeader.getCreatedAt(), "created_at should be initialized");
   }
+
+     /**
+     * Test if a non member can be removed from the list of member's 
+     */
+    @Test
+    public void removeNonMember(){
+        Team team = new Team("Test team Name", "Test team description");
+        User user = new User("test@example.com", "securePassword", "John", "Doe");
+  
+        assertThrows(IllegalArgumentException.class, ()-> team.removeMember(user), "Removing non member should throw IllegalArgumentException");
+
+        }
+
+    /**
+     * Test if a null value can be added to the team member list
+     */
+    @Test
+    public void addingNullToTeamMemberList(){
+        Team team = new Team("Test team Name", "Test team description");
+        
+        assertThrows(NullPointerException.class, ()-> team.addMember(null), "Adding null value to team member list should throw NullPointerException");
+        }
+
+
+    /**
+     * Test if a null value can be removed from the team member list
+     */
+    @Test
+    public void removeNullFromTeamMemberList(){
+        Team team = new Team("Test team Name", "Test team description");
+
+        assertThrows(NullPointerException.class, ()-> team.removeMember(null), "Removing null value to team member list should throw NullPointerException");
+    }
 
 }

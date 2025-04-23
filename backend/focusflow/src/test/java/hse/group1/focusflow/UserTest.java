@@ -1,9 +1,11 @@
 package hse.group1.focusflow;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -13,6 +15,10 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,13 +57,25 @@ public class UserTest {
   @Test
   public void testUpdateLastLogin() {
     User user = new User("some@user.com", "pw", "First", "Last");
+
     assertNull(user.getLastLogin(), "Initially last_login should be null");
+
 
     // Call the helper
     user.updateLastLogin();
 
-    // Now lastLogin should not be null
-    assertNotNull(user.getLastLogin(), "lastLogin should be set after update");
+    //Veryfy the actuaL date of last_login 
+    Instant referenzeTime = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+    assertEquals(user.getLast_login().truncatedTo(ChronoUnit.SECONDS), referenzeTime, "Last login time and reference time are not matching" );
+
+    //Check if DateTimeParseException is not thrown, mean's Date has right format
+    assertDoesNotThrow(() -> { Instant instant = Instant.parse(String.valueOf(user.getLast_login()));}, "last_login should be a valid dateformat");
+
+    // Now last_login should not be null
+    assertNotNull(
+      user.getLast_login(),
+      "last_login should be set after update"
+    );
   }
 
   @Test
@@ -120,7 +138,8 @@ public class UserTest {
                 v.getMessage().contains("valid"));
     assertTrue(hasEmailFormatViolation, "Expected an email format violation");
 
-    /** Check for different type of wrong emails */
+
+    /**Check for different type of wrong emails*/
     user.setEmail("plainTestEmail");
     violations = validator.validate(user);
     assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
@@ -136,7 +155,9 @@ public class UserTest {
     user.setEmail("plainTestEmail@test..com");
     violations = validator.validate(user);
     assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
-  }
+
+    }
+
 
   @Test
   public void testPasswordHashing() {

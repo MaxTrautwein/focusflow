@@ -93,7 +93,11 @@ public class User {
   public String getPassword() {
     return password;
   }
-
+  
+  /**
+   * Save / Set a Password and Hash it with a salt
+   * @param password Password to be Hashed
+   */
   public void setPassword(String password) {
     if (password == null || password.trim().isEmpty()) {
       throw new IllegalArgumentException("Password cannot be empty");

@@ -2,6 +2,7 @@ package hse.group1.focusflow.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
+
+import hse.group1.focusflow.model.User;
 
 
 @Entity
