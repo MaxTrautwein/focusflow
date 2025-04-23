@@ -1,9 +1,11 @@
 package hse.group1.focusflow;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hse.group1.focusflow.model.Team;
@@ -12,6 +14,10 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -50,10 +56,16 @@ public class UserTest {
   @Test
   public void testUpdateLastLogin() {
     User user = new User("some@user.com", "pw", "First", "Last");
-    assertNull(user.getLast_login(), "Initially last_login should be null");
 
     // Call the helper
     user.updateLast_login();
+
+    //Veryfy the actuaL date of last_login 
+    Instant referenzeTime = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+    assertEquals(user.getLast_login().truncatedTo(ChronoUnit.SECONDS), referenzeTime, "Last login time and reference time are not matching" );
+
+    //Check if DateTimeParseException is not thrown, mean's Date has right format
+    assertDoesNotThrow(() -> { Instant instant = Instant.parse(String.valueOf(user.getLast_login()));}, "last_login should be a valid dateformat");
 
     // Now last_login should not be null
     assertNotNull(
@@ -127,7 +139,26 @@ public class UserTest {
           v.getMessage().contains("valid")
       );
     assertTrue(hasEmailFormatViolation, "Expected an email format violation");
-  }
+
+    
+    /**Check for different type of wrong emails*/
+    user.setEmail("plainTestEmail");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("@plainTestEmail.edu");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("plainTestEmail@.de");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
+    user.setEmail("plainTestEmail@test..com");
+    violations = validator.validate(user);
+    assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+    }
+
 
   @Test
   public void testPasswordHashing() {
@@ -154,5 +185,14 @@ public class UserTest {
 
     // Must not match the old password
     assertFalse(user.passwordMatches("initial"), "Old password should fail");
+  }
+
+  @Test
+  public void testEmptyPassword(){
+    User user = new User("set@pw.com", "initial", "Set", "");
+
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("                      "), "Should throw IllegalArgumentException when setting empty password");
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("         "), "Should throw IllegalArgumentException when setting empty password");
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("   "), "Should throw IllegalArgumentException when setting empty password");
   }
 }

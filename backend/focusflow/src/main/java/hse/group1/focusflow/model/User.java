@@ -137,6 +137,11 @@ public class User {
    * @param password Password to be Hashed
    */
   public void setPassword(String password) {
+
+    /**No empty passwords allowed */
+    if("".equals((password.trim()))){
+      throw new IllegalArgumentException("Password cannot be empty");
+    }
     Argon2PasswordEncoder encoder =
       Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     this.password = encoder.encode(password);
