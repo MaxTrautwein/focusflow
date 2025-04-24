@@ -25,3 +25,11 @@ Findings:
 ## Exercise 6.3 (10 Points): Repository Testing
 
 ## Exercise 6.4 (10 Points): REST API Controller
+Implemented endpoints:
+- User registration
+- User login
+- User profile retrieval and update
+
+Also implemented within:
+- Error handling and response codes
+- Input validation
