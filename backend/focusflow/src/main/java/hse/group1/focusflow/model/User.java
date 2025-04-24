@@ -90,10 +90,6 @@ public class User {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
   public void setPassword(String password) {
     Argon2PasswordEncoder encoder =
       Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
