@@ -20,9 +20,8 @@ public class UserServiceImpl implements UserService {
   private final TeamRepository teamRepository;
 
   public UserServiceImpl(
-    UserRepository userRepository,
-    TeamRepository teamRepository
-  ) {
+      UserRepository userRepository,
+      TeamRepository teamRepository) {
     this.userRepository = userRepository;
     this.teamRepository = teamRepository;
   }
@@ -32,9 +31,8 @@ public class UserServiceImpl implements UserService {
     // Check if user already exists
     if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
       throw new ResponseStatusException(
-        HttpStatus.BAD_REQUEST,
-        "Email already in use"
-      );
+          HttpStatus.BAD_REQUEST,
+          "Email already in use");
     }
 
     // Map DTO to Entity
@@ -47,10 +45,8 @@ public class UserServiceImpl implements UserService {
     // Assign to team
     if (dto.getTeamId() != null) {
       Team team = teamRepository
-        .findById(dto.getTeamId())
-        .orElseThrow(() ->
-          new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team not found")
-        );
+          .findById(dto.getTeamId())
+          .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team not found"));
       user.setTeam(team);
     }
 
@@ -61,20 +57,16 @@ public class UserServiceImpl implements UserService {
   public User login(UserLoginDto dto) {
     // Fetch user by email or reject
     User user = userRepository
-      .findByEmail(dto.getEmail())
-      .orElseThrow(() ->
-        new ResponseStatusException(
-          HttpStatus.UNAUTHORIZED,
-          "Invalid credentials"
-        )
-      );
+        .findByEmail(dto.getEmail())
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.UNAUTHORIZED,
+            "Invalid credentials"));
 
     // Verify password
     if (!user.passwordMatches(dto.getPassword())) {
       throw new ResponseStatusException(
-        HttpStatus.UNAUTHORIZED,
-        "Invalid credentials"
-      );
+          HttpStatus.UNAUTHORIZED,
+          "Invalid credentials");
     }
 
     // Update last login timestamp
@@ -87,29 +79,30 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto getProfile(String email) {
     User user = userRepository
-      .findByEmail(email)
-      .orElseThrow(() ->
-        new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
-      );
+        .findByEmail(email)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
     return new UserDto(
-      user.getUserId(),
-      user.getEmail(),
-      user.getFirstName(),
-      user.getLastName(),
-      user.getTeam() != null ? user.getTeam().getId() : null
-    );
+        user.getUserId(),
+        user.getEmail(),
+        user.getFirstName(),
+        user.getLastName(),
+        user.getTeam() != null ? user.getTeam().getId() : null);
   }
 
   @Override
   public UserDto updateProfile(String email, UserUpdateDto update) {
     User user = userRepository
-      .findByEmail(email)
-      .orElseThrow(() ->
-        new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
-      );
+        .findByEmail(email)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-    user.setEmail(update.getEmail());
+    if (!user.getEmail().equals(update.getEmail())) {
+      if (userRepository.findByEmail(update.getEmail()).isPresent()) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already in use");
+      }
+      user.setEmail(update.getEmail());
+    }
+
     if (update.getPassword() != null && !update.getPassword().isBlank()) {
       user.setPassword(update.getPassword());
     }
@@ -119,11 +112,10 @@ public class UserServiceImpl implements UserService {
     userRepository.save(user);
 
     return new UserDto(
-      user.getUserId(),
-      user.getEmail(),
-      user.getFirstName(),
-      user.getLastName(),
-      user.getTeam() != null ? user.getTeam().getId() : null
-    );
+        user.getUserId(),
+        user.getEmail(),
+        user.getFirstName(),
+        user.getLastName(),
+        user.getTeam() != null ? user.getTeam().getId() : null);
   }
 }

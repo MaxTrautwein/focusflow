@@ -2,6 +2,7 @@ package hse.group1.focusflow.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,6 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
+
+import hse.group1.focusflow.model.User;
+
 
 @Entity
 public class Team {
@@ -86,6 +91,10 @@ public class Team {
    * @param user the User to add.
    */
   public void addMember(User user) {
+    if(user == null){
+      throw new NullPointerException("User cannot be null");
+    }
+
     if (!hasMember(user)) {
       members.add(user);
       user.setTeam(this); // Keep the relation bidirectional
@@ -97,6 +106,15 @@ public class Team {
    * @param user the User to remove.
    */
   public void removeMember(User user) {
+    
+    if(user == null){
+        throw new NullPointerException("User cannot be null");
+    }
+
+    if(!members.contains(user)){
+      throw new IllegalArgumentException("User is not a member of the team");
+    }
+    
     if (hasMember(user)) {
       members.remove(user);
       user.setTeam(null); // Remove bidirectional relation

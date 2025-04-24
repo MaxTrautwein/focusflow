@@ -144,6 +144,41 @@ public class TaskTest {
         assertTrue(validator.validate(task).isEmpty());
     }
 
+    /**
+     * Test border case for exact exact on second after due date of task
+     *
+     */
+    @Test 
+    public void TestIsOverdueEdgeCase(){
+         Task task = new Task("title", "shortDescription","longDescription",
+                Instant.now().minus(1, ChronoUnit.SECONDS), TestUser1, TaskPriority.LOW, TaskStatus.OPEN);
+        
+
+        // Due date is now
+        assertFalse(task.getDue_date().isAfter(Instant.now()));
+        assertTrue(task.isOverdue());
+
+        /**Check if due date is in the past */
+        assertFalse(validator.validate(task).isEmpty());
+    }
+
+    /**
+     * Test border case for exact exact on second before due date of task
+     * 
+     */
+    @Test 
+    public void TestIsNotOverdueEdgeCass(){
+
+        Task task = new Task("title", "shortDescription","longDescription",
+                Instant.now().plus(1, ChronoUnit.SECONDS), TestUser1, TaskPriority.LOW, TaskStatus.OPEN);
+        // Due date is now
+        assertFalse(task.getDue_date().isBefore(Instant.now()));
+        assertFalse(task.isOverdue());
+
+        assertTrue(validator.validate(task).isEmpty());
+    }
+
+
     @Test
     public void TestSetAssignee(){
         Task task = new Task("title", "shortDescription","longDescription",
@@ -195,5 +230,4 @@ public class TaskTest {
 
         assertTrue(validator.validate(task).isEmpty());
     }
-
 }
