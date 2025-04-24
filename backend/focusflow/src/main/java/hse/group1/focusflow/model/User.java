@@ -55,8 +55,7 @@ public class User {
   private List<Task> tasks;
 
   // Constructors
-  public User() {
-  }
+  public User() {}
 
   /**
    * @param email     E-Mail of the User
@@ -65,10 +64,11 @@ public class User {
    * @param lastName  Last Name of user
    */
   public User(
-      String email,
-      String password,
-      String firstName,
-      String lastName) {
+    String email,
+    String password,
+    String firstName,
+    String lastName
+  ) {
     this.email = email;
     this.setPassword(password);
     this.firstName = firstName;
@@ -90,10 +90,6 @@ public class User {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
-  }
-  
   /**
    * Save / Set a Password and Hash it with a salt
    * @param password Password to be Hashed
@@ -102,7 +98,8 @@ public class User {
     if (password == null || password.trim().isEmpty()) {
       throw new IllegalArgumentException("Password cannot be empty");
     }
-    Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    Argon2PasswordEncoder encoder =
+      Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     this.password = encoder.encode(password);
   }
 
@@ -155,13 +152,13 @@ public class User {
 
   /**
    * Checks if a given password is correct
-   * 
+   *
    * @param password Plain text password
    * @return True if the password matches the hashed one
    */
   public boolean passwordMatches(String password) {
-    Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    Argon2PasswordEncoder encoder =
+      Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     return encoder.matches(password, this.password); // First raw, then encoded pass
   }
-
 }
