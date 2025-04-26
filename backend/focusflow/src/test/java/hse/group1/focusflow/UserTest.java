@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hse.group1.focusflow.model.Team;
 import hse.group1.focusflow.model.User;
@@ -18,6 +19,7 @@ import jakarta.validation.ValidatorFactory;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,36 +31,38 @@ public class UserTest {
     User user = new User("test@example.com", "securePassword", "John", "Doe");
 
     assertEquals("test@example.com", user.getEmail());
-    assertEquals("John", user.getFirst_name());
-    assertEquals("Doe", user.getLast_name());
-    assertNotNull(user.getCreated_at(), "created_at should be initialized");
+    assertEquals("John", user.getFirstName());
+    assertEquals("Doe", user.getLastName());
+    assertNotNull(user.getCreatedAt(), "createdAt should be initialized");
 
     user.setEmail("updated@example.com");
     assertEquals(
-      "updated@example.com",
-      user.getEmail(),
-      "Email should be updated"
-    );
+        "updated@example.com",
+        user.getEmail(),
+        "Email should be updated");
 
-    user.setFirst_name("Jane");
-    assertEquals("Jane", user.getFirst_name(), "First name should be updated");
+    user.setFirstName("Jane");
+    assertEquals("Jane", user.getFirstName(), "First name should be updated");
 
-    user.setLast_name("Smith");
-    assertEquals("Smith", user.getLast_name(), "Last name should be updated");
+    user.setLastName("Smith");
+    assertEquals("Smith", user.getLastName(), "Last name should be updated");
   }
 
   @Test
-  public void testGetIdInitiallyNull() {
+  public void testGetUserIdInitiallyNull() {
     User user = new User("id@check.com", "password", "First", "Last");
-    assertNull(user.getId(), "ID should be null before persistence");
+    assertNull(user.getUserId(), "userId should be null before persistence");
   }
 
   @Test
   public void testUpdateLastLogin() {
     User user = new User("some@user.com", "pw", "First", "Last");
 
+    assertNull(user.getLastLogin(), "Initially last_login should be null");
+
+
     // Call the helper
-    user.updateLast_login();
+    user.updateLastLogin();
 
     //Veryfy the actuaL date of last_login 
     Instant referenzeTime = Instant.now().truncatedTo(ChronoUnit.SECONDS);
@@ -104,18 +108,15 @@ public class UserTest {
 
     // Expect at least one violation because email is null
     assertFalse(
-      violations.isEmpty(),
-      "Expected constraint violations when email is null"
-    );
+        violations.isEmpty(),
+        "Expected constraint violations when email is null");
 
     // Check that one of the violations is specifically about email being null
     boolean hasNotNullViolation = violations
-      .stream()
-      .anyMatch(
-        v ->
-          v.getPropertyPath().toString().equals("email") &&
-          v.getMessage().contains("cannot be null")
-      );
+        .stream()
+        .anyMatch(
+            v -> v.getPropertyPath().toString().equals("email") &&
+                v.getMessage().contains("cannot be null"));
     assertTrue(hasNotNullViolation, "Expected a NotNull violation on email");
   }
 
@@ -127,20 +128,17 @@ public class UserTest {
 
     // Expect a violation for invalid email format
     assertFalse(
-      violations.isEmpty(),
-      "Expected constraint violations when email format is invalid"
-    );
+        violations.isEmpty(),
+        "Expected constraint violations when email format is invalid");
 
     boolean hasEmailFormatViolation = violations
-      .stream()
-      .anyMatch(
-        v ->
-          v.getPropertyPath().toString().equals("email") &&
-          v.getMessage().contains("valid")
-      );
+        .stream()
+        .anyMatch(
+            v -> v.getPropertyPath().toString().equals("email") &&
+                v.getMessage().contains("valid"));
     assertTrue(hasEmailFormatViolation, "Expected an email format violation");
 
-    
+
     /**Check for different type of wrong emails*/
     user.setEmail("plainTestEmail");
     violations = validator.validate(user);
@@ -157,6 +155,7 @@ public class UserTest {
     user.setEmail("plainTestEmail@test..com");
     violations = validator.validate(user);
     assertFalse(violations.isEmpty(), "Expected constraint violations when email format is invalid");
+
     }
 
 
@@ -179,20 +178,22 @@ public class UserTest {
 
     // Must match new password
     assertTrue(
-      user.passwordMatches("newSecret"),
-      "Should match the new password"
-    );
+        user.passwordMatches("newSecret"),
+        "Should match the new password");
 
     // Must not match the old password
     assertFalse(user.passwordMatches("initial"), "Old password should fail");
   }
 
   @Test
-  public void testEmptyPassword(){
+  public void testEmptyPassword() {
     User user = new User("set@pw.com", "initial", "Set", "");
 
-    assertThrows(IllegalArgumentException.class, () -> user.setPassword("                      "), "Should throw IllegalArgumentException when setting empty password");
-    assertThrows(IllegalArgumentException.class, () -> user.setPassword("         "), "Should throw IllegalArgumentException when setting empty password");
-    assertThrows(IllegalArgumentException.class, () -> user.setPassword("   "), "Should throw IllegalArgumentException when setting empty password");
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("                      "),
+        "Should throw IllegalArgumentException when setting empty password");
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("         "),
+        "Should throw IllegalArgumentException when setting empty password");
+    assertThrows(IllegalArgumentException.class, () -> user.setPassword("   "),
+        "Should throw IllegalArgumentException when setting empty password");
   }
 }

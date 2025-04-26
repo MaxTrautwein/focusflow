@@ -1,11 +1,7 @@
 package hse.group1.focusflow.model;
 
-import java.time.Instant;
-import java.util.List;
-
-import jakarta.validation.constraints.NotNull;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,28 +10,41 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.List;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 @Entity
 @Table(name = "\"user\"") // user is reserved in postgres -> must quote name
 public class User {
 
-  // Basic fields
+  // Primary key
   @Id
   @GeneratedValue
-  private Long user_id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @NotNull(message = "Email cannot be null")
   @Email(message = "Email should be valid")
   private String email;
 
   @NotNull(message = "Password cannot be null")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
-  private String first_name;
-  private String last_name;
+
+  @Column(name = "first_name")
+  private String firstName;
+
+  @Column(name = "last_name")
+  private String lastName;
 
   // Timestamps
-  private Instant created_at;
-  private Instant last_login;
+  @Column(name = "created_at")
+  private Instant createdAt;
+
+  @Column(name = "last_login")
+  private Instant lastLogin;
 
   // Relationships
   @ManyToOne
@@ -49,29 +58,28 @@ public class User {
   public User() {}
 
   /**
-   * @param email E-Mail of the User
-   * @param password Clear Text PW (Will be hashed & Salted)
-   * @param first_name First Name of User
-   * @param last_name Last Name of user
+   * @param email     E-Mail of the User
+   * @param password  Clear Text PW (Will be hashed & Salted)
+   * @param firstName First Name of User
+   * @param lastName  Last Name of user
    */
   public User(
     String email,
     String password,
-    String first_name,
-    String last_name
+    String firstName,
+    String lastName
   ) {
     this.email = email;
     this.setPassword(password);
-    this.first_name = first_name;
-    this.last_name = last_name;
-    this.created_at = Instant.now();
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.createdAt = Instant.now();
   }
 
   // Getters and Setters
 
-  // Only allow Get on id
-  public Long getId() {
-    return user_id;
+  public Long getUserId() {
+    return userId;
   }
 
   public String getEmail() {
@@ -82,28 +90,41 @@ public class User {
     this.email = email;
   }
 
-  public String getFirst_name() {
-    return first_name;
+  /**
+   * Save / Set a Password and Hash it with a salt
+   * @param password Password to be Hashed
+   */
+  public void setPassword(String password) {
+    if (password == null || password.trim().isEmpty()) {
+      throw new IllegalArgumentException("Password cannot be empty");
+    }
+    Argon2PasswordEncoder encoder =
+      Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    this.password = encoder.encode(password);
   }
 
-  public void setFirst_name(String first_name) {
-    this.first_name = first_name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public String getLast_name() {
-    return last_name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
-  public void setLast_name(String last_name) {
-    this.last_name = last_name;
+  public String getLastName() {
+    return lastName;
   }
 
-  public Instant getCreated_at() {
-    return created_at;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
-  public Instant getLast_login() {
-    return last_login;
+  public Instant getCreatedAt() {
+    return createdAt;
+  }
+
+  public Instant getLastLogin() {
+    return lastLogin;
   }
 
   public Team getTeam() {
@@ -114,36 +135,30 @@ public class User {
     this.team = team;
   }
 
-  // Helper methods
-  /**
-   * Updates the last_login with the current Time
-   */
-  public void updateLast_login() {
-    this.last_login = Instant.now();
+  public List<Task> getTasks() {
+    return tasks;
   }
 
-  /** Checks if a Given PW is correct
-   * @param password Plain text PW
-   * @return True if the Password is correct
+  public void setTasks(List<Task> tasks) {
+    this.tasks = tasks;
+  }
+
+  // Helper methods
+
+  // Updates the lastLogin with the current time
+  public void updateLastLogin() {
+    this.lastLogin = Instant.now();
+  }
+
+  /**
+   * Checks if a given password is correct
+   *
+   * @param password Plain text password
+   * @return True if the password matches the hashed one
    */
   public boolean passwordMatches(String password) {
     Argon2PasswordEncoder encoder =
       Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     return encoder.matches(password, this.password); // First raw, then encoded pass
-  }
-
-  /**
-   * Save / Set a Password and Hash it with a salt
-   * @param password Password to be Hashed
-   */
-  public void setPassword(String password) {
-
-    /**No empty passwords allowed */
-    if("".equals((password.trim()))){
-      throw new IllegalArgumentException("Password cannot be empty");
-    }
-    Argon2PasswordEncoder encoder =
-      Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-    this.password = encoder.encode(password);
   }
 }

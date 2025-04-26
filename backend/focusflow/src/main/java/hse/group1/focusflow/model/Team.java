@@ -12,7 +12,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+
 import hse.group1.focusflow.model.User;
+
 
 @Entity
 public class Team {
