@@ -66,14 +66,14 @@ public class UserTest {
 
     //Veryfy the actuaL date of last_login 
     Instant referenzeTime = Instant.now().truncatedTo(ChronoUnit.SECONDS);
-    assertEquals(user.getLast_login().truncatedTo(ChronoUnit.SECONDS), referenzeTime, "Last login time and reference time are not matching" );
+    assertEquals(user.getLastLogin().truncatedTo(ChronoUnit.SECONDS), referenzeTime, "Last login time and reference time are not matching" );
 
     //Check if DateTimeParseException is not thrown, mean's Date has right format
-    assertDoesNotThrow(() -> { Instant instant = Instant.parse(String.valueOf(user.getLast_login()));}, "last_login should be a valid dateformat");
+    assertDoesNotThrow(() -> { Instant instant = Instant.parse(String.valueOf(user.getLastLogin()));}, "last_login should be a valid dateformat");
 
     // Now last_login should not be null
     assertNotNull(
-      user.getLast_login(),
+      user.getLastLogin(),
       "last_login should be set after update"
     );
   }
