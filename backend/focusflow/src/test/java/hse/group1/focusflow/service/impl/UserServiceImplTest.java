@@ -2,7 +2,10 @@ package hse.group1.focusflow.service.impl;
 
 import hse.group1.focusflow.model.Team;
 import hse.group1.focusflow.model.User;
+import hse.group1.focusflow.model.dto.UserDto;
+import hse.group1.focusflow.model.dto.UserLoginDto;
 import hse.group1.focusflow.model.dto.UserRegistrationDto;
+import hse.group1.focusflow.model.dto.UserUpdateDto;
 import hse.group1.focusflow.repository.TeamRepository;
 import hse.group1.focusflow.repository.UserRepository;
 import hse.group1.focusflow.service.UserService;
@@ -129,14 +132,171 @@ class UserServiceImplTest {
     }
 
     @Test
-    void login() {
+    void loginWithUnknownEmail() {
+        UserLoginDto dto = new UserLoginDto();
+        dto.setEmail("test@test.com");
+        dto.setPassword("test12345!!");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () ->userService.login(dto));
+
+        assertEquals("Invalid credentials", exception.getReason());
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
     }
 
     @Test
-    void getProfile() {
+    void loginWithWrongPassword() {
+        UserLoginDto dto = new UserLoginDto();
+        dto.setEmail("test@test.com");
+        dto.setPassword("test12345!!");
+
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setFirstName("Test");
+        user.setLastName("Test");
+        user.setPassword("...111aaAaa");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () ->userService.login(dto));
+
+        assertEquals("Invalid credentials", exception.getReason());
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
     }
 
     @Test
-    void updateProfile() {
+    void loginWithValidCredentials() {
+        UserLoginDto dto = new UserLoginDto();
+        dto.setEmail("test@test.com");
+        dto.setPassword("test12345!!");
+
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setFirstName("Test");
+        user.setLastName("Test");
+        user.setPassword("test12345!!");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+
+        User retUser = userService.login(dto);
+
+        verify(userRepository).save(argThat( user1 ->
+                user1.getEmail().equals(user.getEmail())
+                && user1.getFirstName().equals(user.getFirstName())
+                && user1.getLastName().equals(user.getLastName())
+                && user1.passwordMatches("test12345!!")
+        ));
+
+        assertNotNull(retUser);
+        assertEquals(user.getEmail(), retUser.getEmail());
+        assertEquals(user.getFirstName(), retUser.getFirstName());
+        assertEquals(user.getLastName(),retUser.getLastName());
+        assertTrue(retUser.passwordMatches("test12345!!"));
+    }
+
+    @Test
+    void getUnknownProfile() {
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> userService.getProfile("test@test.com"));
+
+        assertEquals("User not found", exception.getReason());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+    }
+
+    @Test
+    void getExistingProfile() {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setFirstName("Test");
+        user.setLastName("Test");
+        user.setPassword("test12345!!");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+
+        UserDto dto = userService.getProfile("test@test.com");
+
+        assertNotNull(dto);
+        assertEquals(user.getEmail(), dto.getEmail());
+        assertEquals(user.getFirstName(), dto.getFirstName());
+        assertEquals(user.getLastName(), dto.getLastName());
+        assertNull(user.getTeam());
+    }
+
+    @Test
+    void updateUnknownProfile() {
+        UserUpdateDto dto = new UserUpdateDto();
+        dto.setEmail("test@test.com");
+        dto.setPassword("test12345!!");
+        dto.setFirstName("Test");
+        dto.setLastName("Test");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> userService.updateProfile("test@test.com", dto));
+
+        assertEquals("User not found", exception.getReason());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+    }
+
+    @Test
+    void updateToTakenEmailProfile() {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setFirstName("Test");
+        user.setLastName("Test");
+        user.setPassword("test12345!!");
+
+        UserUpdateDto dto = new UserUpdateDto();
+        dto.setEmail("test2@test.com");
+        dto.setPassword("test12345!!");
+        dto.setFirstName("Test");
+        dto.setLastName("Test");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail("test2@test.com")).thenReturn(Optional.of(user));
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> userService.updateProfile("test@test.com", dto));
+
+        assertEquals("Email already in use", exception.getReason());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    }
+
+    @Test
+    void updateFullProfile() {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setFirstName("Test");
+        user.setLastName("Test");
+        user.setPassword("test12345!!");
+
+        UserUpdateDto dto = new UserUpdateDto();
+        dto.setEmail("test2@test.com");
+        dto.setPassword("TEST12345!!");
+        dto.setFirstName("Test2");
+        dto.setLastName("Test2");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail("test2@test.com")).thenReturn(Optional.empty());
+
+        UserDto updatedUser = userService.updateProfile("test@test.com", dto);
+
+        verify(userRepository).save(argThat(user1 ->
+                user1.getEmail().equals(dto.getEmail())
+                && user1.getFirstName().equals(dto.getFirstName())
+                && user1.getLastName().equals(dto.getLastName())
+                && user1.passwordMatches(dto.getPassword())
+        ));
+
+        assertNotNull(updatedUser);
+        assertEquals(dto.getEmail(), updatedUser.getEmail());
+        assertEquals(dto.getFirstName(), updatedUser.getFirstName());
+        assertEquals(dto.getLastName(), updatedUser.getLastName());
     }
 }
