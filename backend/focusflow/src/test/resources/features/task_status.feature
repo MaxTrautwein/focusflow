@@ -28,6 +28,6 @@ Feature: View and update task status
     Then the system should show a warning: "Task not found"
 
   Scenario: Database failure during status update
-    Given the database is temporarily unavailable
+    Given the database is temporarily not available
     When the user "bob@example.com" updates the task "Write documentation" to "IN_PROGRESS"
     Then the system should show a retry option to the user

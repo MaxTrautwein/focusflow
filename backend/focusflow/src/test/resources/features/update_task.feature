@@ -20,7 +20,7 @@ Feature: Update existing task
   Scenario: User clears required field (title)
     When the user "anna@example.com" updates the task "Create prototype" with:
       | title |                           |
-    Then the system should show an error: "Title is required"
+    Then the system should give an error: "Title is required"
 
   Scenario: User changes priority and description
     When the user "anna@example.com" updates the task "Create prototype" with:
@@ -34,10 +34,10 @@ Feature: Update existing task
     Given the task "Create prototype" was deleted
     When the user "anna@example.com" attempts to update the task with:
       | title | Create updated prototype |
-    Then the system should show a warning: "Task not found"
+    Then the system should give a warning: "Task not found"
 
   Scenario: Database update fails
-    Given the database is temporarily unavailable
+    Given the database has temporarily no connection
     When the user "anna@example.com" updates the task "Create prototype" with:
       | title | Finalize prototype |
     Then the system should inform the user of the failure and allow a retry

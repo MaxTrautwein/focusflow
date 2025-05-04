@@ -17,6 +17,4 @@ public class UserRegistrationSteps {
   public void user_is_registered() {
       // Assertion
   }
-  
-  
 }

@@ -9,8 +9,7 @@ Feature: Remind user for tasks due soon or overdue
       | title                     | dueDate     | status    |
       | Finalize project report   | today       | OPEN      |
       | Submit expense receipts   | yesterday   | IN_REVIEW |
-      | Clean up old branches     | tomorrow    | DONE      |
-      | Prepare sprint demo       | yesterday   | DONE      |
+      
 
   Scenario: Remind user of due and overdue tasks
     When the system performs the scheduled task check
