@@ -60,7 +60,7 @@ public class RemindForTaskDueSteps {
 
         reminderTasks = tasks.stream()
                 .filter(t -> t.getStatus() != TaskStatus.CLOSED)
-                .filter(t -> !t.getDue_date().isAfter(Instant.now())) // due today or overdue
+                .filter(t -> !t.getDue_date().isAfter(Instant.now())) 
                 .collect(Collectors.toList());
     }
 
