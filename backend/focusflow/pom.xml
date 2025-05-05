@@ -89,6 +89,28 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Cucumber Dependencies -->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>7.11.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit-platform-engine</artifactId>
+			<version>7.11.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite</artifactId>
+			<version>1.10.0</version>
+			<scope>test</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -98,14 +120,14 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<plugin>  
-				<groupId>org.apache.maven.plugins</groupId>  
-				<artifactId>maven-checkstyle-plugin</artifactId>  
-				<version>3.3.0</version>  
-				<configuration>  
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
 					<configLocation>src/main/resources/focusFlowCodeStyleChecker.xml</configLocation>
-				</configuration>  
-			</plugin> 
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -118,7 +140,7 @@
 					<targetJdk>21</targetJdk>
 					<failOnViolation>true</failOnViolation>
 				</configuration>
-        	</plugin>
+			</plugin>
 		</plugins>
 	</build>
 </project>
