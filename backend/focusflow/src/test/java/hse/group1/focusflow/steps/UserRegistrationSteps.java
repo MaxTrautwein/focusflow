@@ -39,13 +39,13 @@ public class UserRegistrationSteps {
 
     @Then("the user should be registered successfully")
     public void user_is_registered() {
-        assertNotNull(user, "User-Objekt sollte existieren");
-        assertTrue(violations.isEmpty(), "Es sollten keine Validierungsfehler auftreten");
-
+        assertNotNull(user, "User object should exist");
+        assertTrue(violations.isEmpty(), "There should be no validation errors");
+    
         User storedUser = userStore.get(user.getEmail());
-        assertNotNull(storedUser, "User sollte im UserStore gespeichert sein");
-        assertEquals(user.getEmail(), storedUser.getEmail(), "Die Email-Adressen sollten übereinstimmen");
-
-        assertTrue(user.passwordMatches("password123"), "Das Passwort sollte korrekt gehashed sein");
-    }
+        assertNotNull(storedUser, "User should be saved in the user store");
+        assertEquals(user.getEmail(), storedUser.getEmail(), "Email addresses should match");
+    
+        assertTrue(user.passwordMatches("password123"), "The password should be correctly hashed");
+    }    
 }
