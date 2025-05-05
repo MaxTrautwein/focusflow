@@ -23,7 +23,7 @@ public class RemindForTaskDueSteps {
 
     @Given("the user {string} is assigned to the following tasks:")
     public void the_user_is_assigned_to_the_following_tasks(String email, DataTable dataTable) {
-        testUser = new User(email, "Test", "User", "password");
+        testUser = new User(email, "Test", "User", "pas12A6ord");
 
         for (Map<String, String> row : dataTable.asMaps()) {
             String title = row.get("title");
