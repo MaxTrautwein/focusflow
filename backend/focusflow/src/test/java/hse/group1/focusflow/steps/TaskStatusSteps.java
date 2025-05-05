@@ -22,7 +22,7 @@ public class TaskStatusSteps {
 
     @Given("the following tasks exist for user {string}:")
     public void the_following_tasks_exist_for_user(String email, DataTable dataTable) {
-        testUser = new User(email, "Test", "User", "pw");
+        testUser = new User(email, "Test", "User", "pass123&A6d");
 
         for (Map<String, String> row : dataTable.asMaps()) {
             String title = row.get("title");
