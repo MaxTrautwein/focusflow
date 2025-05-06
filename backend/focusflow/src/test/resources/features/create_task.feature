@@ -21,14 +21,14 @@ Feature: Task Creation
     When the user clicks on the "Create New Task" button
     And leaves the title empty
     And submits the form
-    Then the system should display an error message saying "Title is required"
+    Then the system should display an error message saying "title must be set"
 
   Scenario: Show validation error when due date is in the past
     When the user clicks on the "Create New Task" button
     And fills in the title "Fix bug"
     And sets the due date to a past date
     And submits the form
-    Then the system should display an error message saying "Due date cannot be in the past"
+    Then the system should display an error message saying "due_date must be in the future"
 
   Scenario: Show retry warning when database is unavailable
     Given the database is temporarily unavailable
