@@ -97,12 +97,11 @@ public class CreateTaskSteps {
 
     @Then("the system should display an error message saying {string}")
     public void the_system_should_display_an_error_message_saying(String expectedMessage) {
-        if (errorMessage == null) {
+        
             Set<ConstraintViolation<Task>> violations = validator.validate(task);
             if (!violations.isEmpty()) {
                 errorMessage = violations.iterator().next().getMessage();
             }
-        }
 
         assertEquals(expectedMessage, errorMessage);
     }
