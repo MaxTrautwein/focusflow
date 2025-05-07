@@ -27,9 +27,13 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+        cache-dependency-path: backend/focusflow
     - name: Build with Maven
       working-directory: backend/focusflow
       run: mvn -B package --file pom.xml
+    - name: Just Test with Maven
+      working-directory: backend/focusflow
+      run: mvn test
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
