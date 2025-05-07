@@ -28,7 +28,7 @@ Step definitions were implemented for the following feature files:
 
 To automate the BDD tests, Cucumber was integrated with the Maven build process. Feature files are located in [features folder](../../backend/focusflow/src/test/resources/features/), and the corresponding step definitions are in [steps folder](../../backend/focusflow/src/test/java/hse/group1/focusflow/steps/). Cucumber is configured to automatically detect and execute these scenarios during the `mvn test` phase.
 
-The required dependencies (`cucumber-java`, `cucumber-junit-platform-engine`, and `junit-platform-suite`) were added in the [pom.xml](../../backend/focusflow/pom.xml) file. No additional test runner class was needed, as JUnit 5's platform engine integration handles test discovery and execution automatically.
+The required dependencies (`cucumber-java`, `cucumber-junit-platform-engine`, and `junit-platform-suite`) were added in the [pom.xml](../../backend/focusflow/pom.xml) file. Just like the [cucumber runner](../../backend/focusflow/src/test/java/hse/group1/focusflow/CucumberTest.java).
 
 With this setup, acceptance criteria written in Gherkin syntax are automatically tested as part of each test cycle, ensuring the application behaves correctly from the user's perspective.
 
