@@ -1,3 +1,5 @@
+[![Java CI with Maven](https://github.com/MaxTrautwein/focusflow/actions/workflows/ci.yml/badge.svg)](https://github.com/MaxTrautwein/focusflow/actions/workflows/ci.yml)
+
       _____                    _____ _               
     |  ___|__   ___ _   _ ___|  ___| | _____      __
     | |_ / _ \ / __| | | / __| |_  | |/ _ \ \ /\ / /
