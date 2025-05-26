@@ -5,9 +5,7 @@ import hse.group1.focusflow.model.dto.UserDto;
 import hse.group1.focusflow.model.dto.UserLoginDto;
 import hse.group1.focusflow.model.dto.UserRegistrationDto;
 import hse.group1.focusflow.model.dto.UserUpdateDto;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface UserService {
   Boolean register(UserRegistrationDto dto);
   User login(UserLoginDto dto);
