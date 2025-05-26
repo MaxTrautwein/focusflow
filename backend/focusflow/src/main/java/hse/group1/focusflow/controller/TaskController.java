@@ -35,8 +35,13 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public TaskDto get(@PathVariable Long id) {
-        return service.get(id);
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        try{
+            TaskDto taskDto = service.get(id);
+            return ResponseEntity.ok(taskDto);
+        }catch (IllegalArgumentException exception) {
+            return ResponseEntity.status(404).body(exception.getMessage());
+        }
     }
 
     @GetMapping
@@ -45,8 +50,13 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public TaskDto update(@PathVariable Long id, @Valid @RequestBody TaskDto dto) {
-        return service.update(id, dto);
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody TaskDto dto) {
+        try{
+        TaskDto updatedTask = service.update(id, dto);
+        return ResponseEntity.ok(updatedTask);
+        }catch(IllegalArgumentException exception) {
+            return ResponseEntity.status(404).body(exception.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -54,4 +64,5 @@ public class TaskController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 }
