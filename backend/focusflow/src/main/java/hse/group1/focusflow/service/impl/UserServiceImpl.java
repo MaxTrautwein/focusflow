@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void register(UserRegistrationDto dto) {
+  public Boolean register(UserRegistrationDto dto) {
     // Check if user already exists
     if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
       throw new ResponseStatusException(
@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     userRepository.save(user);
+    return true;
   }
 
   @Override
