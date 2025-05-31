@@ -1,5 +1,5 @@
 export interface User {
-  id: number
+  userId: number
   email: string
   firstName: string
   lastName: string
@@ -20,7 +20,7 @@ export interface Task {
   short_description: string
   long_description: string
   due_date: Date
-  assignee?: User
+  assignee?: User | null
   priority: TaskPriority
   status: TaskStatus
 }
