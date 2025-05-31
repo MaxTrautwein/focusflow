@@ -8,7 +8,6 @@ import hse.group1.focusflow.model.dto.UserUpdateDto;
 import hse.group1.focusflow.service.UserService;
 import jakarta.validation.Valid;
 import java.security.Principal;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,17 +30,16 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<?> registerUser(
+  public ResponseEntity<String> registerUser(
     @RequestBody @Valid UserRegistrationDto dto
   ) {
     try {
       userService.register(dto);
       return ResponseEntity.status(HttpStatus.CREATED).body(
-        Map.of("message", "User registered successfully.")
+        "User registered successfully."
       );
     } catch (ResponseStatusException e) {
-      return ResponseEntity.status(e.getStatusCode())
-                           .body(Map.of("message", e.getReason()));
+      return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
     }
   }
 
@@ -51,8 +49,7 @@ public class UserController {
       User user = userService.login(dto);
       return ResponseEntity.ok(user);
     } catch (ResponseStatusException e) {
-      return ResponseEntity.status(e.getStatusCode())
-                           .body(Map.of("message", e.getReason()));
+      return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
     }
   }
 

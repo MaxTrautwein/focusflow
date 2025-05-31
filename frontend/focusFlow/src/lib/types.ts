@@ -45,5 +45,5 @@ export interface AuthContextType {
     lastName: string,
     email: string,
     password: string
-  ) => Promise<void>
+  ) => Promise<string>
 }

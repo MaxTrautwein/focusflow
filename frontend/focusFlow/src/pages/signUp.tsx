@@ -5,8 +5,8 @@ import {
   Typography,
   Button,
   Alert,
+  Divider,
 } from '@mui/material'
-import Divider from '@mui/material/Divider'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
@@ -26,14 +26,16 @@ const SignUp: React.FC = () => {
     setError(null)
 
     try {
-      await register(firstName, lastName, email, password)
-      navigate('/signIn?registration=success')
+      // Hole den reinen Text von der API
+      const apiMessage = await register(firstName, lastName, email, password)
+      // Leite an SignIn-Seite weiter und übergebe die Nachricht
+      navigate('/signIn', { state: { registrationMessage: apiMessage } })
     } catch (err) {
       console.error(err)
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError('Unkown Error')
+        setError('Unknown error')
       }
     }
   }
@@ -65,69 +67,61 @@ const SignUp: React.FC = () => {
           Sign Up
         </Typography>
 
-        {/* Fehleranzeige */}
         {error && (
           <Alert severity='error' sx={{ mb: 2 }}>
             {error}
           </Alert>
         )}
+        <FormControl fullWidth component='form' onSubmit={handleSubmit}>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <TextField
+              label='First Name'
+              placeholder='First Name'
+              required
+              margin='normal'
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <TextField
+              label='Last Name'
+              placeholder='Last Name'
+              required
+              margin='normal'
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </Box>
+          <TextField
+            label='E-Mail'
+            placeholder='E-Mail'
+            fullWidth
+            required
+            margin='normal'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            label='Password'
+            placeholder='Password'
+            type='password'
+            required
+            margin='normal'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <form onSubmit={handleSubmit}>
-          <FormControl fullWidth>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <TextField
-                label='First Name'
-                placeholder='First Name'
-                required
-                margin='normal'
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <TextField
-                label='Last Name'
-                placeholder='Last Name'
-                required
-                margin='normal'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </Box>
-            <TextField
-              label='E-Mail'
-              placeholder='E-Mail'
-              fullWidth
-              required
-              margin='normal'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              label='Password'
-              placeholder='Password'
-              type='password'
-              required
-              margin='normal'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Button
-                type='submit'
-                variant='contained'
-                sx={{ marginTop: '1rem' }}
-                fullWidth
-              >
-                Sign Up
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <Button type='submit' variant='contained' fullWidth>
+              Sign Up
+            </Button>
+            <Divider />
+            <Link to='/signIn'>
+              <Button type='button' variant='outlined' fullWidth>
+                Sign In
               </Button>
-              <Divider />
-              <Link to='/signIn'>
-                <Button type='button' variant='contained' fullWidth>
-                  Sign In
-                </Button>
-              </Link>
-            </Box>
-          </FormControl>
-        </form>
+            </Link>
+          </Box>
+        </FormControl>
       </Box>
     </Box>
   )

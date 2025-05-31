@@ -65,30 +65,46 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     lastName: string,
     email: string,
     password: string
-  ) => {
+  ): Promise<string> => {
     try {
-      const response = await api.post<{
-        status: boolean
-        user: User
-      }>('/users/register', {
-        email,
-        password,
-        firstName,
-        lastName,
-      })
+      const response = await api.post(
+        '/users/register',
+        {
+          email,
+          password,
+          firstName,
+          lastName,
+        },
+        {
+          responseType: 'text', // IMMER als Text behandeln
+        }
+      )
 
-      if (response.data.status) {
-        setUser(response.data.user)
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-      }
+      const message = response.data
+      return message
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const apiMessage =
-          error.response?.data?.message || 'Registration failed'
+        const data = error.response?.data
+
+        let apiMessage = 'Internal Server Error: Registration failed'
+        if (typeof data === 'string') {
+          try {
+            const parsed = JSON.parse(data)
+            if (parsed.message) {
+              apiMessage = parsed.message
+            } else {
+              apiMessage = data // Fallback: Original-Text
+            }
+          } catch {
+            // Kein JSON → einfach als Text übernehmen
+            apiMessage = data
+          }
+        }
+
         throw new Error(apiMessage)
       } else {
         console.error('Unexpected Error:', error)
-        throw error
+        throw new Error('Internal Server Error: Registration failed')
       }
     }
   }

@@ -20,8 +20,8 @@ const SignIn: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const queryParams = new URLSearchParams(location.search)
-  const registrationSuccess = queryParams.get('registration') === 'success'
+  const state = location.state as { registrationMessage?: string }
+  const registrationMessage = state?.registrationMessage
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -66,9 +66,9 @@ const SignIn: React.FC = () => {
           Sign In
         </Typography>
 
-        {registrationSuccess && (
+        {registrationMessage && (
           <Alert severity='success' sx={{ mb: 2 }}>
-            Registration successful! You can now sign in.
+            {registrationMessage}
           </Alert>
         )}
 
