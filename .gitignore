@@ -29,3 +29,6 @@ replay_pid*
 # Personal settings
 .vscode/*
 .vscode/settings.json
+
+# db files
+db/

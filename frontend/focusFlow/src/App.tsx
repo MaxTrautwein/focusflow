@@ -1,118 +1,153 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Typography,
-} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import SearchBar from './components/searchbar'
-import { useEffect, useState } from 'react'
-import type { Task } from './lib/types'
-import ChipWithMenu from './components/chipWithMenu'
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router-dom'
+import SignIn from './pages/signIn'
+import Dashboard from './pages/dashboard'
+import SignUp from './pages/signUp'
+import Root from './pages/root'
+import { AuthProvider } from './context/authProvider'
+import { useAuth } from './hooks/useAuth'
+import React from 'react'
+import { CircularProgress, Box } from '@mui/material'
+import Navbar from './components/navbar'
+import NotFound from './pages/notFound'
 
-function App() {
-  const [tasks, setTasks] = useState<Task[]>([])
-  const [priorities, setPriorities] = useState<(string | null)[]>(
-    Array(tasks.length).fill(null)
-  )
-  const [status, setStatus] = useState<(string | null)[]>(
-    Array(tasks.length).fill(null)
-  )
-  const handlePriorityChange = (index: number, newPriority: string | null) => {
-    const updated = [...priorities]
-    updated[index] = newPriority
-    setPriorities(updated)
-  }
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { user, loading } = useAuth()
 
-  const handleStatusChange = (index: number, newStatus: string | null) => {
-    const updated = [...status]
-    updated[index] = newStatus
-    setStatus(updated)
-  }
-
-  useEffect(() => {
-    setTasks([
-      {
-        title: 'Test Task',
-        short_description: 'short description',
-        long_description: 'long description',
-        due_date: new Date(),
-        user: {
-          email: 'test@example.com',
-          firstName: 'Max',
-          lastName: 'Mustermann',
-        },
-        priority: 'HIGH',
-        status: 'OPEN',
-      },
-    ])
-  }, [])
-
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        mt: '3rem',
-        gap: '2rem',
-        width: '100%',
-        maxWidth: '600px',
-        mx: 'auto',
-      }}
-    >
-      <SearchBar />
+  if (loading) {
+    return (
       <Box
         sx={{
           width: '100%',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        {tasks.map((task, index) => (
-          <Accordion key={index}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1-content'
-              id={`panel1-header-${index}`}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}
-              >
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Typography component='span'>{task.title}</Typography>
-                  <Typography variant='body2'>
-                    {task.short_description}
-                  </Typography>
-                </Box>
-                <Box
-                  onClick={(event) => event.stopPropagation()}
-                  sx={{ display: 'flex', gap: 1, marginRight: 1 }}
-                >
-                  <ChipWithMenu
-                    customLabel='Select Priority'
-                    options={['High', 'Medium', 'Low']}
-                    selectedOption={priorities[index]}
-                    onSelect={(option) => handlePriorityChange(index, option)}
-                  />
-                  <ChipWithMenu
-                    customLabel='Select Status'
-                    options={['OPEN', 'PENDING', 'IN_REVIEW', 'CLOSED']}
-                    selectedOption={status[index]}
-                    onSelect={(option) => handleStatusChange(index, option)}
-                  />
-                </Box>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails>{task.long_description}</AccordionDetails>
-          </Accordion>
-        ))}
+        <CircularProgress />
       </Box>
-    </Box>
+    )
+  }
+
+  if (!user) return <Navigate to='/signIn' />
+  return <>{children}</>
+}
+
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  if (user) return <Navigate to='/dashboard' />
+  return <>{children}</>
+}
+
+const RootRedirect: React.FC = () => {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  if (user) {
+    return <Navigate to='/dashboard' />
+  } else {
+    return <Navigate to='/signIn' />
+  }
+}
+
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation()
+  const hideNavbarPaths = ['/signIn', '/signUp']
+
+  const shouldHideNavbar = hideNavbarPaths.includes(location.pathname)
+
+  return (
+    <>
+      {!shouldHideNavbar && <Navbar />}
+      {children}
+    </>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path='/' element={<RootRedirect />} />
+            <Route
+              path='/dashboard'
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/root'
+              element={
+                <ProtectedRoute>
+                  <Root />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/signIn'
+              element={
+                <PublicRoute>
+                  <SignIn />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path='/signUp'
+              element={
+                <PublicRoute>
+                  <SignUp />
+                </PublicRoute>
+              }
+            />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </AuthProvider>
   )
 }
 
