@@ -2,7 +2,6 @@ import React from 'react'
 import Chip from '@mui/material/Chip'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import Divider from '@mui/material/Divider'
 
 interface ChipWithMenuProps {
   options: string[]
@@ -32,11 +31,6 @@ const ChipWithMenu: React.FC<ChipWithMenuProps> = ({
     handleClose()
   }
 
-  const handleClearSelection = () => {
-    onSelect(null)
-    handleClose()
-  }
-
   return (
     <div>
       <Chip
@@ -55,15 +49,6 @@ const ChipWithMenu: React.FC<ChipWithMenuProps> = ({
             {option}
           </MenuItem>
         ))}
-
-        {selectedOption && (
-          <>
-            <Divider />
-            <MenuItem onClick={handleClearSelection} sx={{ color: 'red' }}>
-              Delete
-            </MenuItem>
-          </>
-        )}
       </Menu>
     </div>
   )
