@@ -30,5 +30,8 @@ replay_pid*
 .vscode/*
 .vscode/settings.json
 
-# db files
-db/
+# Docker Database
+db
+
+# Docker Database
+db

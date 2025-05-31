@@ -8,7 +8,7 @@ You may run this app by either installing it locally or by using Docker
 Install Docker: https://docs.docker.com/get-started/get-docker/
 
 ### 2. Update application.properties
-The the [application.properties](src\main\resources\application.properties) Update `localhost` to `focusflow-db`.
+In the [application.properties](src\main\resources\application.properties) update `localhost` to `focusflow-db`.
 
 ### 3. Run the application
 
