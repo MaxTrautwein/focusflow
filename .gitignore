@@ -29,3 +29,9 @@ replay_pid*
 # Personal settings
 .vscode/*
 .vscode/settings.json
+
+# Docker Database
+db
+
+# Docker Database
+db
