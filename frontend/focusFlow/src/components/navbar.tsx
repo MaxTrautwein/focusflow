@@ -23,6 +23,7 @@ const Navbar: React.FC = () => {
           color='inherit'
           aria-label='logout'
           onClick={handleLogout}
+          data-cy='navbar-logout-button'
         >
           <LogoutIcon />
         </IconButton>

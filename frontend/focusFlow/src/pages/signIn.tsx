@@ -87,6 +87,7 @@ const SignIn: React.FC = () => {
             margin='normal'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            data-cy='email-input'
           />
           <TextField
             label='Password'
@@ -96,6 +97,7 @@ const SignIn: React.FC = () => {
             margin='normal'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            data-cy='password-input'
           />
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
@@ -103,12 +105,18 @@ const SignIn: React.FC = () => {
               variant='contained'
               sx={{ marginTop: '1rem' }}
               fullWidth
+              data-cy='singIn-button'
             >
               Sign in
             </Button>
             <Divider />
             <Link to='/signUp'>
-              <Button type='button' variant='contained' fullWidth>
+              <Button
+                type='button'
+                variant='contained'
+                fullWidth
+                data-cy='signUp-button'
+              >
                 Sign Up
               </Button>
             </Link>

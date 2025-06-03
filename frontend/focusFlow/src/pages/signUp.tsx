@@ -81,6 +81,7 @@ const SignUp: React.FC = () => {
               margin='normal'
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              data-cy='firstName-input-signUpPage'
             />
             <TextField
               label='Last Name'
@@ -89,6 +90,7 @@ const SignUp: React.FC = () => {
               margin='normal'
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              data-cy='lastName-input-signUpPage'
             />
           </Box>
           <TextField
@@ -99,6 +101,7 @@ const SignUp: React.FC = () => {
             margin='normal'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            data-cy='email-input-signUpPage'
           />
           <TextField
             label='Password'
@@ -108,15 +111,16 @@ const SignUp: React.FC = () => {
             margin='normal'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            data-cy='password-input-signUpPage'
           />
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-            <Button type='submit' variant='contained' fullWidth>
+            <Button type='submit' variant='contained' fullWidth data-cy='signUp-button-signUpPage'>
               Sign Up
             </Button>
             <Divider />
             <Link to='/signIn'>
-              <Button type='button' variant='outlined' fullWidth>
+              <Button type='button' variant='outlined' fullWidth datatype='signIn-button-signUpPage'>
                 Sign In
               </Button>
             </Link>
