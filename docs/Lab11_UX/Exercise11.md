@@ -87,18 +87,25 @@ The product appears trustworthy to the user.
 
 | Emotional Reactions                           | UX Factor |
 | --------------------------------------------- | --------- |
-| “That is exactly what I needed.”              | ? |
-| “I can count on you.”                         | ? |
-| “It makes life easier.”                       | ? |
-| “We know each other.”                         | ? |
-| “Not being alone.”                            | ? |
-| “Wow.”                                        | ? |
-| “I´m in control.” or “I am the boss.”         | ? |
-| “I´ve never seen anything like this before.”  | ? |
+| “That is exactly what I needed.”              | Relevancy |
+| “I can count on you.”                         | Dependability |
+| “It makes life easier.”                       | Helpfulness |
+| “We know each other.”                         | Intuitive Operation |
+| “Not being alone.”                            | Social Influences |
+| “Wow.”                                        | Overall |
+| “I´m in control.” or “I am the boss.”         | Controllability |
+| “I´ve never seen anything like this before.”  | Novelty |
 
 
 ## Exercise 11.3 (10 Points): UX Factor Analysis for FocusFlow
 
 
+1. Select **5** UX factors form the literature that are most relevant to FocusFlow.
+2. For each selected factor, answer the following:
+- Why is this factor important for FocusFlow´s target users?
+- How could the design or features of FocusFlow support this factor?
+- What risks exist if this UX factor is ignored?
+
 
 ## Exercise 11.4 (10 Points): Prepare Final Team Pitch – FocusFlow Implementation & Reflection
+
