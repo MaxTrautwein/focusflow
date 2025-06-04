@@ -109,3 +109,28 @@ The product appears trustworthy to the user.
 
 ## Exercise 11.4 (10 Points): Prepare Final Team Pitch – FocusFlow Implementation & Reflection
 
+Presentation Under: [Presentation](./presentation.md)
+
+
+### Reqs:
+- 12 - 15 minutes (including Questions)
+- Must Cover
+    - Provide an overview of the status of your prototype implementation
+        - Tech stack
+        - Key implementation specifics (e.g., REST API, tate management, data model, etc.)
+        - High-level architecture diagram
+        - Tools / services integrated (e.g., CI/CD, database, auth, cloud, testing tools, etc.)
+    - Reflect on the original requirements you gathered during the exercises and compare it to your prototype implementation
+        - What were the initial functional and quality requirements in your team?
+        - Which ones were implemented successfully during the exercises?
+        - Which were postponed, dropped, or changed (and why)?
+        - Which UI / UX factors were considered in your design?
+    - Reflect on your project and your prototype:
+        - rough overview on how you organized tasks within the team
+        - What were the biggest challenges during development?
+        - What worked well? What didn´t?
+        - Which exercise helped the most or was the most interesting for your team?
+        - What would your team do differently in the next iteration?
+        - What would your team do differently in the next iteration?
+
+- Mentioned in class: markdown is also fine
