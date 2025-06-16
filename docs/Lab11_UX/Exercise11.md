@@ -117,7 +117,7 @@ Presentation Under: [Presentation](./presentation.md)
 - Must Cover
     - Provide an overview of the status of your prototype implementation
         - Tech stack
-        - Key implementation specifics (e.g., REST API, tate management, data model, etc.)
+        - Key implementation specifics (e.g., REST API, state management, data model, etc.)
         - High-level architecture diagram
         - Tools / services integrated (e.g., CI/CD, database, auth, cloud, testing tools, etc.)
     - Reflect on the original requirements you gathered during the exercises and compare it to your prototype implementation
