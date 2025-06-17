@@ -13,18 +13,53 @@ block-beta
   d["Docker / Compose: \n As an Option"]:3
 ```
 
-#### (Extra) Tooling / Tools:
+### Tools/services integrated
  
 - mermaid &rarr; Graphs in Markdown
 - CI: Dependabot &rarr; Update Dependencies
 - CI: checkstyle &rarr; check Styling
 - assertj, cucumber-java, junit, h2, .. &rarr; Standard Java Testing
 
-### Key implementation specifics
-
 ### High-level architecture diagram
 
-### Tools/services integrated
+```mermaid
+block-beta
+    db[("Postgres")]
+    space
+    b["Spring Boot"]
+    space
+    f["React"]
+    space
+    u(("User"))
+    b-- "JPA" -->db
+    f-- "REST" -->b
+    u-- "interacts" -->f
+```
+#### Backend
+
+```mermaid
+flowchart TD
+    External["Extarnal REST "]
+    Controller
+    Service
+    Repository
+    db[("Postgres")]
+
+
+External -."DTO / Plain" .-> Controller
+Controller -- "Interface (DTO / Plain)" --> Service
+Service -- "JPA Interface (Model object)" --> Repository
+Repository -. "SQL" .-> db 
+```
+
+### Key implementation specifics
+
+#### Hashed & Salted Passwords
+Using Argon2 _[see also](https://argon2.online/)_
+- Not Plaintext passwords via Hashing
+- Salt blocks Rainbow tables
+
+#### hmm...
 
 ## 2.Requirements Recap
 
