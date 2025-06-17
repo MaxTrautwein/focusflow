@@ -54,13 +54,13 @@ Todo Add an Example to Each
 - How could the design or features of FocusFlow support this factor?
 - What risks exist if this UX factor is ignored?
 
-| **Factor**  | **Why is this factor important for FocusFlow's target users?**                                     | **How could the design or features of FocusFlow support this factor?**                                                                          | **What risks exist if this UX factor is ignored?** |
-| ----------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| Helpfulness | The whole app loses its sence when focusflow doesn't hekp organizing tasks                         | Organized and structured way of showing todos and done tasks, adding members tor groups ...                                                     | Loosing users                                      |
-| Efficiency  | App needs to be quick in handling otherwise, other competitors are more helpful in organizing work | A navbar that lets the user move fast in the app and in app notifications when tasks are about to reach the due, exceeded or a new one appeared | Loosing users to competitors                       |
-|             |                                                                                                    |                                                                                                                                                 |                                                    |
-|             |                                                                                                    |                                                                                                                                                 |                                                    |
-|             |                                                                                                    |                                                                                                                                                 |                                                    |
+| **Factor**        | **Why is this factor important for FocusFlow's target users?**                                                            | **How could the design or features of FocusFlow support this factor?**                                                                          | **What risks exist if this UX factor is ignored?**                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Helpfulness       | The whole app loses its sense when focusflow doesn't help organizing tasks                                                | Organized and structured way of showing todos and done tasks, adding members tor groups ...                                                     | Loosing users                                                                     |
+| Efficiency        | App needs to be quick in handling otherwise, other competitors are more helpful in organizing work                        | A navbar that lets the user move fast in the app and in app notifications when tasks are about to reach the due, exceeded or a new one appeared | Loosing users to competitors                                                      |
+| Relevancy         | Show the user only requested tasks nothing more Focusflow wants to be light weight, don't overload app with advertisement | Have a list of only your tasks, and another for the subscribed tasks. Easy to move in between through a checkbox                                | User loses interest in app cause he loses track                                   |
+| Stimulation       | To make the team use this app it's important that they like to use it.                                                    | Reward fulfilled tasks, so user gets appositive feedback and accept the app better                                                              | No acceptance in the team = loosing users                                         |
+| Trust/Credibility | Company/User data need to stay confidential under all means                                                               | Having a log in that at least authenticates the user                                                                                            | Worst case, getting sued. Best case loosing customer and trust in the application |
 
 ## Exercise 11.4 (10 Points): Prepare Final Team Pitch – FocusFlow Implementation & Reflection
 
@@ -70,22 +70,23 @@ Presentation Under: [Presentation](./presentation.md)
 
 - 12 - 15 minutes (including Questions)
 - Must Cover
-    - Provide an overview of the status of your prototype implementation
-        - Tech stack
-        - Key implementation specifics (e.g., REST API, state management, data model, etc.)
-        - High-level architecture diagram
-        - Tools / services integrated (e.g., CI/CD, database, auth, cloud, testing tools, etc.)
-    - Reflect on the original requirements you gathered during the exercises and compare it to your prototype implementation
-        - What were the initial functional and quality requirements in your team?
-        - Which ones were implemented successfully during the exercises?
-        - Which were postponed, dropped, or changed (and why)?
-        - Which UI / UX factors were considered in your design?
-    - Reflect on your project and your prototype:
-        - rough overview on how you organized tasks within the team
-        - What were the biggest challenges during development?
-        - What worked well? What didn´t?
-        - Which exercise helped the most or was the most interesting for your team?
-        - What would your team do differently in the next iteration?
-        - What would your team do differently in the next iteration?
+
+  - Provide an overview of the status of your prototype implementation
+    - Tech stack
+    - Key implementation specifics (e.g., REST API, state management, data model, etc.)
+    - High-level architecture diagram
+    - Tools / services integrated (e.g., CI/CD, database, auth, cloud, testing tools, etc.)
+  - Reflect on the original requirements you gathered during the exercises and compare it to your prototype implementation
+    - What were the initial functional and quality requirements in your team?
+    - Which ones were implemented successfully during the exercises?
+    - Which were postponed, dropped, or changed (and why)?
+    - Which UI / UX factors were considered in your design?
+  - Reflect on your project and your prototype:
+    - rough overview on how you organized tasks within the team
+    - What were the biggest challenges during development?
+    - What worked well? What didn´t?
+    - Which exercise helped the most or was the most interesting for your team?
+    - What would your team do differently in the next iteration?
+    - What would your team do differently in the next iteration?
 
 - Mentioned in class: markdown is also fine

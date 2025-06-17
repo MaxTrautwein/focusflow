@@ -1,10 +1,12 @@
 # Presentation
 
 ## 1.Implementation Overview
+
 ### Tech stack
+
 - Frontend:
 - Backend:
-- Tools: 
+- Tools:
 
 ### Key implementation specifics
 
@@ -22,10 +24,10 @@
 
 ### Which UI / UX factors were considered in your design?
 
-
 ## 3.Retrospective & Lessons learned
 
 ### Overview of organization of tasks (Team leaders, frontend, backend ,etc.)
+
 The roles which were set in the [first Lab](../Lab1_ProjectSetup&TechSelection/Roles.md) mainly stayed. But everyone worked in the backend, since this was the main focus of the Lab.
 
 For Documentation there was happened not to be a single person that was responsible which changed every lab, but everyone made the documentation regarding their work.
@@ -33,12 +35,18 @@ For Documentation there was happened not to be a single person that was responsi
 The leading role was also pretty fluid and depended on prior knowledge or simply availability, caused by other responsibilities, since a week can go by fast.
 
 ### What were the biggest challenges during development?
+
 - Reviewing of Pull requests with a lot of changes
 
 ### What worked well? What didn´t?
 
+- Comunication in the team
+- Working with the GitHub Repository
+
 ### Which exercise helped the most or was the most interesting for your team?
+
 - Gherkin Syntax and BDD
+- E2E (nice to see how the whole surface of an application can be tested, and easy to set up so quit comfortable to use)
 
 ### What would your team do differently in the next iteration?
 
