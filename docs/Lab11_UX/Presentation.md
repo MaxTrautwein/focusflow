@@ -87,33 +87,33 @@ Using the JPA Entity Framework
 
 | Initial functional and quality requirements | Implemented functional and quality requirements|
 |---|---|
-|1. Task Management||
+|**1. Task Management**||
 |Users must be able to create, edit and delete tasks | ✅|
 |Each task must have the following features: <br>- Title<br>- Description<br>- Due Date<br>- Priority Level | ✅|
 |Users should be able to edit existing tasks (to update status or modify details) | ✅|
-|2. Task Status Management||
+|**2. Task Status Management**||
 |Possible status for tasks:<br>- "Open"<br>- "In Progress"<br>- "Done"<br>- "Overdue" (The date of the task has passed) | ✅|
 |The system must automatically change a task's status to "Overdue" if the due date has passed and the task is not marked as "Done" | ❌|
-|3. Task Organization||
+|**3. Task Organization**||
 |Tasks should be grouped into categories or projects to help users structure their workload|❌|
 |Users should be able to view and manage tasks within these categories|❌|
-|4. User Allocation & Collaboration||
+|**4. User Allocation & Collaboration**||
 |Users can assign tasks to themselves or other team members|✅ (In fact they can assign a task to everybody by using the id of a user)|
 |Users should have the option to assign tasks to multiple team members if needed|❌|
 |The system should notify assigned users automatically when they receive a new task|❌|
 |The system should notify assigned users via email or in-app notifications|❌|
-|5. Time & Deadline Awareness||
+|**5. Time & Deadline Awareness**||
 |Tasks should have due dates that users can set and modify|✅|
 |The system must provide reminders/alerts for upcoming or overdue tasks|❌|
 |Reminders should not unnecessary distract the user|(✅) Non existing can not distract|
-|6. System Architecture||
+|**6. System Architecture**||
 |FocusFlow must have a 3-tier architecture:<br>- Database (Stores tasks and user data)<br>- API Backend (Manages data access and business logic)<br>- Frontend (Provides the user interface)|✅|
 |The system should be a web-based application, so it can be accessed from multiple devices|✅|
-|7. User Interface & Usability||
+|**7. User Interface & Usability**||
 |The UI should be simple, clear and easy to navigate|✅|
 |The system should allow users to quickly find, create and update tasks without complex menus|✅|
 |Therefore users should be able to start using the system without training|✅|
-|8. System Extensibility & Future Enhancements||
+|**8. System Extensibility & Future Enhancements**||
 |The system should be modular, so that:<br>- Future feature expansions are possible<br>- Easy updates to UI, database and backend are possible|✅|
 
 
@@ -121,6 +121,14 @@ Using the JPA Entity Framework
 Due to limited time some requirements are not met yet (see table above), so instead of going for all of nothing we focused on the requirements that were most important to use in terms of delivering working software, where the different tests could be implemented.
 
 ### Which UI / UX factors were considered in your design?
+| **UX Factor**        | **How We Considered It in FocusFlow**                                                                                                                   |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Helpfulness**      | • Contextual tooltips on buttons and forms<br>• Onboarding overlay guiding users through core actions (Create, Edit, Delete tasks)                     |
+| **Efficiency**       | • Fixed, collapsible sidebar for quick navigation (Dashboard, Calendar, Projects)<br>• Keyboard shortcuts (`N` = new task, `/` = search)             |
+| **Relevancy**        | • “My Tasks” vs. “Team Tasks” tabs showing only relevant items<br>• Smart filters (due this week, overdue, by priority)                                |
+| **Simplicity**       | • Clean, minimal color palette with clear typography<br>• Single-page layout for core workflows (no deep menu trees)                                    |
+| **Trust/Credibility**| • Secure login (JWT + HTTPS by default)<br>• “Privacy & Data” link in footer and “Last updated” timestamp on tasks for transparency and reliability |
+
 
 ## 3.Retrospective & Lessons learned
 
