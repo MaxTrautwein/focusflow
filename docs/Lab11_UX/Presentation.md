@@ -4,9 +4,21 @@
 
 ### Tech stack
 
-- Frontend:
-- Backend:
-- Tools:
+```mermaid
+block-beta
+  columns 3
+  a["Frontend: \n React + TypeScript + Vite"] 
+  b["Backend: \n Spring Boot"] 
+  c["DB: \n Postgres"] 
+  d["Docker / Compose: \n As an Option"]:3
+```
+
+#### (Extra) Tooling / Tools:
+ 
+- mermaid &rarr; Graphs in Markdown
+- CI: Dependabot &rarr; Update Dependencies
+- CI: checkstyle &rarr; check Styling
+- assertj, cucumber-java, junit, h2, .. &rarr; Standard Java Testing
 
 ### Key implementation specifics
 
