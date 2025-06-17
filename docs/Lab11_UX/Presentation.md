@@ -15,10 +15,15 @@ block-beta
 
 ### Tools/services integrated
  
+#### General
 - mermaid &rarr; Graphs in Markdown
-- CI: Dependabot &rarr; Update Dependencies
-- CI: checkstyle &rarr; check Styling
 - assertj, cucumber-java, junit, h2, .. &rarr; Standard Java Testing
+
+#### CI
+- Dependabot &rarr; Update Dependencies
+- Build & Test on Push via Maven
+- checkstyle &rarr; check Styling
+
 
 ### High-level architecture diagram
 
@@ -59,7 +64,20 @@ Using Argon2 _[see also](https://argon2.online/)_
 - Not Plaintext passwords via Hashing
 - Salt blocks Rainbow tables
 
-#### hmm...
+#### REST API
+- Using DTO's
+- Spring Annotations for
+  - Request Parameters
+  - Body
+  - Methods
+
+### state management
+Entirely handled by DB.
+
+_no real logged in "State" Supported_
+
+### data model
+Using the JPA Entity Framework
 
 ## 2.Requirements Recap
 
